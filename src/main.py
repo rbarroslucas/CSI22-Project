@@ -4,14 +4,14 @@ from level import Level
 
 class Game:
 	def __init__(self):
-		  
+
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
 		pygame.display.set_caption('Bap trip')
 		self.clock = pygame.time.Clock()
 
 		self.level = Level()
-	
+
 	def run(self):
 		while True:
 			for event in pygame.event.get():

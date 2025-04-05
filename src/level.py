@@ -1,13 +1,13 @@
-import pygame 
+import pygame
 from settings import *
-from tile import Tile
-from player import Player
+from map.tile import Tile
+from characters.player import Player
 
 
 class Level:
 	def __init__(self):
 
-		# get the display surface 
+		# get the display surface
 		self.display_surface = pygame.display.get_surface()
 
 		# sprite group setup
