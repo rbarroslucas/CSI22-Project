@@ -1,17 +1,13 @@
 import pygame
 from settings import *
-from characters.entity import Entity
+from characters.colidable import Colidable
 
-class Player(Entity):
-    def __init__(self, path, pos, groups):
-        super().__init__(path, pos, groups)
-        self.image = pygame.image.load(path).convert_alpha()
-        self.rect = self.image.get_rect(topleft=pos)
+class Player(Colidable):
+    def __init__(self, path, pos, obstacle_sprite, groups):
+        super().__init__(path, pos, PLAYER_SPEED, groups)
+        self.obstacle_sprite = obstacle_sprite
 
-        self.direction = pygame.math.Vector2()
-        self.speed = PLAYER_SPEED
-
-    def update(self):
+    def input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP] or keys[pygame.K_w]:
             self.direction.y = -1
@@ -26,8 +22,20 @@ class Player(Entity):
             self.direction.x = 1
         else:
             self.direction.x = 0
-
-        if self.direction.magnitude() != 0:
-            self.direction = self.direction.normalize()
-
-        self.rect.center += self.direction * self.speed
+    
+    def collision(self, direction, sprite):
+        if direction == 'horizontal':
+            if self.direction.x>0:
+                self.hitbox.right = sprite.hitbox.left
+            elif self.direction.x<0:
+                self.hitbox.left = sprite.hitbox.right
+                
+        elif direction == 'vertical':
+            if self.direction.y>0:
+                self.hitbox.bottom = sprite.hitbox.top
+            elif self.direction.y<0:
+                self.hitbox.top = sprite.hitbox.bottom
+        
+    def update(self):
+        self.input()
+        self.move(self.obstacle_sprite)

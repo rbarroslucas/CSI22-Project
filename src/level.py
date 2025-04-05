@@ -25,7 +25,7 @@ class Level:
 				if col == 'x':
 					Floor('./imgs/2.png', (x,y), [self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
-					Player('./imgs/1.png', (x,y),[self.visible_sprites])
+					Player('./imgs/1.png', (x,y), self.obstacle_sprites, [self.visible_sprites])
 
 	def run(self):
 		# update and draw the game
