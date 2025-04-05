@@ -1,6 +1,7 @@
 import pygame
 from settings import *
-from map.floor import Floor
+from render.camera import YSortCameraGroup
+from map.wall import Wall
 from characters.player import Player
 
 
@@ -11,7 +12,7 @@ class Level:
 		self.display_surface = pygame.display.get_surface()
 
 		# sprite group setup
-		self.visible_sprites = pygame.sprite.Group()
+		self.visible_sprites = YSortCameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
 
 		# sprite setup
@@ -23,11 +24,11 @@ class Level:
 				x = col_index * TILESIZE
 				y = row_index * TILESIZE
 				if col == 'x':
-					Floor('./imgs/2.png', (x,y), [self.visible_sprites,self.obstacle_sprites])
+					Wall('./graphics/2.png', (x,y), [self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
-					Player('./imgs/1.png', (x,y), self.obstacle_sprites, [self.visible_sprites])
+					self.player1 = Player('./graphics/1.png', (x,y), self.obstacle_sprites, [self.visible_sprites])
 
 	def run(self):
 		# update and draw the game
 		self.visible_sprites.update()
-		self.visible_sprites.draw(self.display_surface)
+		self.visible_sprites.custom_draw(self.player1)

@@ -6,6 +6,7 @@ class Player(Colidable):
     def __init__(self, path, pos, obstacle_sprite, groups):
         super().__init__(path, pos, PLAYER_SPEED, groups)
         self.obstacle_sprite = obstacle_sprite
+        self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -22,20 +23,20 @@ class Player(Colidable):
             self.direction.x = 1
         else:
             self.direction.x = 0
-    
+
     def collision(self, direction, sprite):
         if direction == 'horizontal':
             if self.direction.x>0:
                 self.hitbox.right = sprite.hitbox.left
             elif self.direction.x<0:
                 self.hitbox.left = sprite.hitbox.right
-                
+
         elif direction == 'vertical':
             if self.direction.y>0:
                 self.hitbox.bottom = sprite.hitbox.top
             elif self.direction.y<0:
                 self.hitbox.top = sprite.hitbox.bottom
-        
+
     def update(self):
         self.input()
         self.move(self.obstacle_sprite)
