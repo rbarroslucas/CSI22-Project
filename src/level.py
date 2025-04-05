@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from map.tile import Tile
+from map.floor import Floor
 from characters.player import Player
 
 
@@ -23,9 +23,9 @@ class Level:
 				x = col_index * TILESIZE
 				y = row_index * TILESIZE
 				if col == 'x':
-					Tile((x,y),[self.visible_sprites,self.obstacle_sprites])
+					Floor('./imgs/2.png', (x,y), [self.visible_sprites,self.obstacle_sprites])
 				if col == 'p':
-					Player((x,y),[self.visible_sprites])
+					Player('./imgs/1.png', (x,y),[self.visible_sprites])
 
 	def run(self):
 		# update and draw the game
