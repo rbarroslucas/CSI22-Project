@@ -2,6 +2,7 @@ WIDTH = 1080
 HEIGTH= 720
 FPS = 60
 TILESIZE = 16
+PLAYER_SPEED = 4
 
 WORLD_MAP = [
 ['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x'],
