@@ -3,8 +3,9 @@ from settings import *
 from characters.colidable import Colidable
 
 class Player(Colidable):
-    def __init__(self, path, pos, obstacle_sprite, groups):
+    def __init__(self, path, pos, groups, obstacle_sprite):
         super().__init__(path, pos, PLAYER_SPEED, groups)
+        self.image = pygame.transform.scale(self.image, (self.image.get_width() * 2.5, self.image.get_height() * 2.5))
         self.obstacle_sprite = obstacle_sprite
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
 

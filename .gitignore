@@ -152,6 +152,12 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Local app for map building
+spritesheets/badTripFloor1.tiled-project
+spritesheets/badTripFloor1.tiled-session
+spritesheets/Tiled-1.11.2_Linux_Qt-6_x86_64.AppImage
+spritesheets/teste.tmj
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore

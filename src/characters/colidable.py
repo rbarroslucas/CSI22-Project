@@ -5,7 +5,6 @@ class Colidable(pygame.sprite.Sprite):
         super().__init__(groups)
 
         self.image = pygame.image.load(path).convert_alpha()
-        self.image = pygame.transform.scale(self.image, (self.image.get_width() * 3, self.image.get_height() * 3))
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect
 

@@ -1,7 +1,8 @@
-WIDTH = 1080
-HEIGTH= 720
+WIDTH = 768
+HEIGTH= 768
 FPS = 60
-TILESIZE = 64
+TILESIZE = 24
+BOUNDARY = 21 # random tile number of the boundary I used (probably best to use 0 for the next boundaries, this was just a test)
 PLAYER_SPEED = 4
 
 WORLD_MAP = [

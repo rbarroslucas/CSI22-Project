@@ -7,7 +7,7 @@ class Game:
 
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
-		pygame.display.set_caption('Bap trip')
+		pygame.display.set_caption('Bap Trip')
 		self.clock = pygame.time.Clock()
 
 		self.level = Level()
@@ -19,7 +19,7 @@ class Game:
 					pygame.quit()
 					sys.exit()
 
-			self.screen.fill('green')
+			self.screen.fill('black')
 			self.level.run()
 			pygame.display.update()
 			self.clock.tick(FPS)

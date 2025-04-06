@@ -1,7 +1,8 @@
 import pygame
 from settings import *
+from render.support import import_csv_layout
 from render.camera import YSortCameraGroup
-from map.wall import Wall
+from map.tile import Tile
 from characters.player import Player
 
 
@@ -19,14 +20,20 @@ class Level:
 		self.create_map()
 
 	def create_map(self):
-		for row_index,row in enumerate(WORLD_MAP):
-			for col_index, col in enumerate(row):
-				x = col_index * TILESIZE
-				y = row_index * TILESIZE
-				if col == 'x':
-					Wall('./graphics/2.png', (x,y), [self.visible_sprites,self.obstacle_sprites])
-				if col == 'p':
-					self.player1 = Player('./graphics/1.png', (x,y), self.obstacle_sprites, [self.visible_sprites])
+		layout = {
+			'boundary': import_csv_layout('./layouts/teste_boundary.csv'),
+		}
+
+		for style, layout in layout.items():
+			for row_index, row in enumerate(layout):
+				for col_index, col in enumerate(row):
+					x = col_index * TILESIZE
+					y = row_index * TILESIZE
+					if style == 'boundary':
+						Tile((x, y), [self.obstacle_sprites], 'invisible')
+
+		self.player1 = Player('./graphics/1.png', (144, 144), [self.visible_sprites], self.obstacle_sprites)
+
 
 	def run(self):
 		# update and draw the game
