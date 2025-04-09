@@ -32,7 +32,7 @@ class Level:
 					if style == 'boundary':
 						Tile((x, y), [self.obstacle_sprites], 'invisible')
 
-		self.player1 = Player('./graphics/1.png', (144, 144), [self.visible_sprites], self.obstacle_sprites)
+		self.player1 = Player('diogo', (144, 144), [self.visible_sprites], self.obstacle_sprites)
 
 
 	def run(self):
