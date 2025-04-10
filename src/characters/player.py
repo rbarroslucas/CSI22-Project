@@ -7,16 +7,21 @@ class Player(Colidable):
     def __init__(self, name, pos, groups, obstacle_sprite):
         path = './graphics/' + name + '/stand_front/' + 'stand_front0.png'
         super().__init__(path, pos, PLAYER_SPEED, groups)
+        
+        ##hard coded, change after
         self.obstacle_sprite = obstacle_sprite
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
-        self.status = 'stand_front'
+        
+        #animation
+        self.status = 'walk_frontleft'
+        self.frame_index = 0
+        self.animate_speed = 6/FPS
         self.import_player_assets(name)
         
     def import_player_assets(self, name):
         character_path = './graphics/' + name + '/'
-        self.animations = {'stand_front': [], 'stand_frontright': [], 'stand_frontleft': [], 
-                           'stand_back': [], 'stand_backright': [], 'stand_backleft': [],
-                           'stand_right': [], 'stand_left': []}
+        self.animations = {'stand_front': [], 'stand_frontright': [], 'stand_frontleft': [], 'stand_back': [], 'stand_backright': [], 'stand_backleft': [], 'stand_right': [], 'stand_left': [],
+                           'walk_front': [], 'walk_frontright': [], 'walk_frontleft': [], 'walk_back': [], 'walk_backright': [], 'walk_backleft': [], 'walk_right': [], 'walk_left': []}
         
         for animation in self.animations.keys():
             full_path = character_path + animation
@@ -52,7 +57,7 @@ class Player(Colidable):
                 self.hitbox.top = sprite.hitbox.bottom
 
     def animate(self):
-        status_aux = 'stand_'
+        status_aux = 'walk_'
         
         if self.direction.y < 0:
             status_aux = status_aux + 'back'
@@ -64,10 +69,15 @@ class Player(Colidable):
         elif self.direction.x < 0:
             status_aux = status_aux + 'left'
         
-        if status_aux != 'stand_':
+        if status_aux != 'walk_':
             self.status = status_aux
+        else:
+            self.status = 'stand_' + self.status.split('_')[1]
         
-        self.image = self.animations[self.status][0]
+        self.frame_index += self.animate_speed
+        if self.frame_index >= len(self.animations[self.status]):
+            self.frame_index = 0
+        self.image = self.animations[self.status][int(self.frame_index)]
     
     def update(self):
         self.input()
