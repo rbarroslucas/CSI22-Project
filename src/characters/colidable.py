@@ -1,10 +1,13 @@
 import pygame
+from settings import *
 
 class Colidable(pygame.sprite.Sprite):
     def __init__(self, path, pos, speed, groups):
         super().__init__(groups)
 
         self.image = pygame.image.load(path).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (self.image.get_width() * SCALE_FACTOR,
+                                                         self.image.get_height() * SCALE_FACTOR))
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect
 
