@@ -5,6 +5,7 @@ from map.obstacle import Obstacle
 from render.support import import_csv_layout
 from render.camera import YSortCameraGroup
 from characters.player import Player
+from characters.enemy import Enemy
 from characters.particle import Particle
 
 
@@ -17,13 +18,16 @@ class Level:
 		# sprite group setup
 		self.visible_sprites = YSortCameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
-  
+
 		self.player_attackable_sprite = pygame.sprite.Group()
-		self.enemy_attackable_sprite  = pygame.sprite.Group() 
+		self.enemy_attackable_sprite  = pygame.sprite.Group()
 
 		# load the map
 		self.map = TiledMap('./layouts/teste.tmx')
 		self.tmxdata = self.map.tmxdata
+
+		# current enemies
+		self.enemies = []
 
 		# construct the map
 		self.make_map()
@@ -48,6 +52,7 @@ class Level:
 				Obstacle((x, y), tile, [self.obstacle_sprites])
 
 		# load the player
+		self.enemies.append(Enemy('diogo', (376, 288), [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
 		self.player1 = Player('diogo', (288, 288), self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
 
 	def make_map(self):
@@ -59,7 +64,7 @@ class Level:
 	def create_particle(self, caller, pos, direction):
 		if caller == 'player':
 			return Particle(pos, direction, [self.visible_sprites], self.player_attackable_sprite)
- 
+
 	def run(self):
 		# update and draw the game
 		self.visible_sprites.update()
