@@ -5,10 +5,9 @@ from characters.entity import Entity
 from characters.particle import Particle
 
 class Player(Entity):
-    def __init__(self, name, pos, groups, obstacle_sprite):
+    def __init__(self, name, pos, create_particle, groups, obstacle_sprite):
         path = './graphics/' + name + '/stand_front/' + 'stand_front0.png'
         super().__init__(path, pos, PLAYER_SPEED, groups, obstacle_sprite)
-        self.g = groups
         ##hard coded, change after
         self.obstacle_sprite = obstacle_sprite
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
@@ -24,6 +23,8 @@ class Player(Entity):
         self.frame_index = 0
         self.animate_speed = 6/FPS
         self.import_player_assets(name)
+        
+        self.create_particle = create_particle
         
     def import_player_assets(self, name):
         character_path = './graphics/' + name + '/'
@@ -75,7 +76,7 @@ class Player(Entity):
                 else:
                     direction.x = 0
                     
-                self.particles.append(Particle(self.rect.topleft, direction, self.g, self.obstacle_sprite))
+                self.particles.append(self.create_particle('player', self.rect.topleft, direction))
 
     def cooldown(self):
         current_time = pygame.time.get_ticks()
@@ -109,8 +110,8 @@ class Player(Entity):
     
     def update_particles(self):
         for particle in self.particles[:]:
-            particle.update()
-            if particle.eliminate:
+            eliminate = particle.check_kill(self.rect.center)
+            if eliminate:
                 self.particles.remove(particle)
                 particle.kill()
     
