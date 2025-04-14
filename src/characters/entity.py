@@ -23,14 +23,5 @@ class Entity(Colidable):
                 self.hitbox.top = sprite.hitbox.bottom
     
     @abstractmethod
-    def action():
-        pass
-    
-    @abstractmethod
-    def animate():
-        pass
-    
     def update(self):
-        self.action()
-        self.animate()
-        self.move(self.obstacle_sprite)
+        pass
