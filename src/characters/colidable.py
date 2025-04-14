@@ -1,7 +1,8 @@
 import pygame
 from settings import *
+from abc import ABC, abstractmethod
 
-class Colidable(pygame.sprite.Sprite):
+class Colidable(pygame.sprite.Sprite, ABC):
     def __init__(self, path, pos, speed, groups):
         super().__init__(groups)
 
@@ -37,5 +38,6 @@ class Colidable(pygame.sprite.Sprite):
                 if sprite.hitbox.colliderect(self.hitbox):
                     self.collision(direction, sprite)
 
+    @abstractmethod
     def collision(self, direction, sprite):
         pass
