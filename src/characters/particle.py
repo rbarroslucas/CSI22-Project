@@ -4,14 +4,17 @@ from settings import *
 
 class Particle(Colidable):
     #TO DO
-    def __init__(self, pos, direction, groups, group):
-        super().__init__('./graphics/1.png', pos, PARTICLE_SPEED, groups)
+    def __init__(self, path, pos, direction, damage, groups, group):
+        super().__init__(path, pos, PARTICLE_SPEED, groups)
         self.direction = direction
         self.group = group
         self.eliminate = False
         self.max_dist = 15*TILESIZE
+        self.damage = damage
+        
         
     def collision(self, direction, sprite):
+        sprite.get_damaged(self.damage)
         self.eliminate = True
     
     def check_kill(self, pos):

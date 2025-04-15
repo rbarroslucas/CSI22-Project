@@ -41,6 +41,10 @@ class Enemy(Entity):
 
         self.get_player_pos = get_player_pos
         self.get_player_sight = get_player_sight
+        
+        self.health = 3
+        self.invencible_time = 100
+        self.invencible_start = 0
 
     def import_enemy_assets(self, name):
         character_path = './graphics/' + name + '/'
@@ -124,7 +128,17 @@ class Enemy(Entity):
             self.frame_index = 0
         self.image = self.animations[self.status][int(self.frame_index)]
     
+    def get_damaged(self, damage):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.invencible_start > self.invencible_time:
+            self.health -= damage
+            self.invencible_start = current_time
+
+            if self.health <= 0:
+                self.kill()
+                
     def update(self):
+        print(self.health)
         self.action()
         self.animate()
         self.cooldown()

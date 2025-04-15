@@ -33,6 +33,10 @@ class Player(Entity):
         self.drag_ghost = drag_ghost
         self.drag_cooldown = 400
         self.drag_start = 0
+        
+        self.health = 3
+        self.invencible_time = 100
+        self.invencible_start = 0
 
     def import_player_assets(self, name):
         character_path = './graphics/' + name + '/'
@@ -139,6 +143,18 @@ class Player(Entity):
     def get_rect_center(self):
         return self.rect.center
 
+    def get_damaged(self, damage):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.invencible_start > self.invencible_time:
+            self.health -= damage
+            self.invencible_start = current_time
+            
+            if self.health <= 0:
+                self.switch_player()
+                
+    def check_death(self):
+        return self.health <= 0
+    
     def update(self):
         if self.active:
             self.input()

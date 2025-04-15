@@ -107,9 +107,9 @@ class Level:
 
 	def create_particle(self, caller, pos, direction):
 		if caller == 'player':
-			return Particle(pos, direction, [self.visible_sprites], self.player_attackable_sprite)
+			return Particle("./graphics/1.png", pos, direction, 1, [self.visible_sprites], self.player_attackable_sprite)
 		elif caller == 'enemy':
-			return Particle(pos, direction, [self.visible_sprites], self.enemy_attackable_sprite)
+			return Particle("./graphics/1.png", pos, direction, 1, [self.visible_sprites], self.enemy_attackable_sprite)
 
 	def get_player_pos(self):
 		rect = self.active_player.get_rect_center()
@@ -132,10 +132,13 @@ class Level:
 		p2.switch_start = p1.switch_start
 
 	def switch_player(self):
-		if self.active_player == self.player1:
+		if self.active_player == self.player1 and not self.player2.check_death():
 			self.switch_changes(self.player1, self.player2)
-		else:
+		elif self.active_player == self.player2 and not self.player1.check_death():
 			self.switch_changes(self.player2, self.player1)
+		elif self.player1.check_death() and self.player2.check_death():
+			#Acabou
+			print("GG")
 
 	def drag_ghost(self):
 		if self.active_player == self.player1:
