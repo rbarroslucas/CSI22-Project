@@ -34,7 +34,7 @@ class Level:
 
 		# ghost glow
 		radius = 200
-		self.ghost_glow = glow(210, radius, BRIGHT_DEFAULT)
+		self.ghost_glow = glow(210, radius, BRIGHT_DEFAULT + 40)
 		self.ghost_glow.set_colorkey((0, 0, 0))
 		self.ghost_glow.set_alpha(255)
 		self.ghost_light = pygame.sprite.Sprite(self.light_post)
@@ -96,7 +96,7 @@ class Level:
 
 
 		# load the player
-		self.enemies.append(Enemy('manga', (376, 288), self.get_player_pos, self.get_player_sight, self.create_particle,
+		self.enemies.append(Enemy('rat', (376, 288), self.get_player_pos, self.get_player_sight, self.create_particle,
                             [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
 		self.player1 = Player('diogo', (288, 288), self.switch_player, self.drag_ghost, self.interact,
                         self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
@@ -112,11 +112,11 @@ class Level:
 		self.render(floor_surf)
 		self.visible_sprites.set_floor(floor_surf)
 
-	def create_particle(self, caller, pos, direction):
+	def create_particle(self, caller, path, pos, direction):
 		if caller == 'player':
-			return Particle("./graphics/1.png", pos, direction, self.active_player.inventory.weapon.damage, [self.visible_sprites], self.player_attackable_sprite)
+			return Particle(path, pos, direction, self.active_player.inventory.weapon.damage, [self.visible_sprites], self.player_attackable_sprite)
 		elif caller == 'enemy':
-			return Particle("./graphics/1.png", pos, direction, 1, [self.visible_sprites], self.enemy_attackable_sprite)
+			return Particle(path, pos, direction, 1, [self.visible_sprites], self.enemy_attackable_sprite)
 
 	def get_player_pos(self):
 		rect = self.active_player.get_rect_center()

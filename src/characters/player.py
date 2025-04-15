@@ -8,7 +8,9 @@ class Player(Entity):
         path = './graphics/' + name + '/stand_front/' + 'stand_front0.png'
         super().__init__(path, pos, create_particle, PLAYER_SPEED, groups, obstacle_sprite)
         ##hard coded, change after
-        self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
+        self.hitbox = self.rect.inflate(-self.rect.width//2, -self.rect.height//2)
+        self.hitbox = self.hitbox.move(0, self.rect.height//4)
+        self.particle_path = './graphics/player_particle'
 
         #particles
         self.casting_cooldown = 0
@@ -64,7 +66,7 @@ class Player(Entity):
                     self.casting_start = pygame.time.get_ticks()
                     direction = self.sight()
 
-                    self.particles.append(self.create_particle('player', self.rect.topleft, direction))
+                    self.particles.append(self.create_particle('player', self.particle_path, self.rect.topleft, direction))
 
             current_time = pygame.time.get_ticks()
 
@@ -146,13 +148,13 @@ class Player(Entity):
         if current_time - self.invencible_start > self.invencible_time:
             self.health -= damage
             self.invencible_start = current_time
-            
+
             if self.health <= 0:
                 self.switch_player()
-                
+
     def check_death(self):
         return self.health <= 0
-    
+
     def update(self):
         if self.active:
             self.input()

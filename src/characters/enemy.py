@@ -10,7 +10,8 @@ class Enemy(Entity):
         super().__init__(path, pos, create_particle, ENEMY_SPEED, groups, obstacle_sprite)
         ##hard coded, change after
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
-
+        self.particle_path = './graphics/' + name + '/particle'
+        
         #particles
         self.casting_cooldown = 800
         
@@ -49,7 +50,7 @@ class Enemy(Entity):
                 self.casting_start = pygame.time.get_ticks()
                 direction = -delta
                     
-                self.particles.append(self.create_particle('enemy', self.rect.topleft, direction))
+                self.particles.append(self.create_particle('enemy', self.particle_path, self.rect.topleft, direction))
             direction_perp = pygame.math.Vector2(0, 0)
 
             alpha = math.atan2(player_sight.y, player_sight.x)
@@ -117,7 +118,6 @@ class Enemy(Entity):
                 self.kill()
                 
     def update(self):
-        print(self.health)
         self.action()
         self.animate()
         self.cooldown()

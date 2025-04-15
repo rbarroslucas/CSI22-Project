@@ -19,13 +19,15 @@ class Colidable(pygame.sprite.Sprite, ABC):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
 
-        self.hitbox.x += self.direction.x * self.speed
+        delta_x = self.direction.x * self.speed
+        self.hitbox.x += delta_x
         self.check_collision('horizontal', group)
 
-        self.hitbox.y += self.direction.y * self.speed
+        delta_y = self.direction.y * self.speed
+        self.hitbox.y += delta_y
         self.check_collision('vertical', group)
 
-        self.rect.center = self.hitbox.center
+        self.rect.center = self.hitbox.center + pygame.Vector2((0, -self.rect.height//4))
 
     def check_collision(self, direction, group):
         if direction == 'horizontal':
