@@ -1,4 +1,5 @@
 import pygame
+import math
 from characters.entity import Entity
 from settings import *
 
@@ -21,7 +22,10 @@ class Enemy(Entity):
         self.frame_index = 0
         self.animate_speed = 6/FPS
         self.import_enemy_assets(name)
-        
+
+        # ai stuff
+        self.evasion_angle = math.pi/3
+
         self.get_player_pos = get_player_pos
         self.get_player_sight = get_player_sight
 
@@ -32,10 +36,22 @@ class Enemy(Entity):
     def action(self):
         player_pos = self.get_player_pos()
         player_sight = self.get_player_sight()
-        
+
+        direction_perp = pygame.math.Vector2(0, 0)
+
         delta_x = self.rect.center[0] - player_pos[0]
         delta_y = self.rect.center[1] - player_pos[1]
-        
+
+        alpha = math.atan2(player_sight.y, player_sight.x)
+        omega = math.atan2(delta_y, delta_x)
+
+        if omega < self.evasion_angle + alpha and omega >= alpha:
+            direction_perp.x +=  -player_sight.y
+            direction_perp.y += player_sight.x
+        elif omega > -self.evasion_angle + alpha and omega < alpha:
+            direction_perp.x +=  player_sight.y
+            direction_perp.y += -player_sight.x
+
         if delta_x > 0:
             self.direction.x = -1
         elif delta_x < 0:
@@ -49,6 +65,11 @@ class Enemy(Entity):
             self.direction.y = 1
         else:
             self.direction.y = 0
+
+        if(abs(delta_y) > abs(delta_x)):
+            self.direction.x = direction_perp.x
+        else:
+            self.direction.y = direction_perp.y
 
     def animate(self):
         #TO DO

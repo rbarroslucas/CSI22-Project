@@ -1,4 +1,5 @@
 import pygame
+import math
 from settings import *
 from map.tiledmap import TiledMap
 from map.obstacle import Obstacle
@@ -11,10 +12,6 @@ from characters.particle import Particle
 
 class Level:
 	def __init__(self):
-		# boundary surface for debugging
-		self.boundary_surface = pygame.Surface((TILESIZE, TILESIZE))
-		self.boundary_surface.fill('red')
-
 		# sprite group setup
 		self.visible_sprites = YSortCameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
@@ -51,6 +48,7 @@ class Level:
 				y = tile_object.y * SCALE_FACTOR
 				Obstacle((x, y), tile, [self.obstacle_sprites])
 
+
 		# load the player
 		self.enemies.append(Enemy('diogo', (376, 288), self.get_player_pos, self.get_player_sight, [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
 		self.player1 = Player('diogo', (288, 288), self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
@@ -69,8 +67,9 @@ class Level:
 		return self.player1.rect.center
 
 	def get_player_sight(self):
-		return self.player1.sight()
- 
+		line = self.player1.sight()
+		return line
+
 	def run(self):
 		# update and draw the game
 		self.visible_sprites.update()
