@@ -15,7 +15,7 @@ class YSortCameraGroup(pygame.sprite.Group):
 		self.floor_surf = floor_surf
 		self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
 
-	def custom_draw(self, player):
+	def custom_draw(self, player, post, post_surface):
 		# getting the offset
 		self.offset.x = player.rect.centerx - self.half_width
 		self.offset.y = player.rect.centery - self.half_height
@@ -28,3 +28,9 @@ class YSortCameraGroup(pygame.sprite.Group):
 		for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
 			offset_pos = sprite.rect.topleft - self.offset
 			self.display_surface.blit(sprite.image, offset_pos)
+
+		for sprite in post.sprites():
+			image = sprite.image
+			post_surface.blit(sprite.image, (self.half_width - image.get_width()/2, self.half_height - image.get_height()/2))
+
+		self.display_surface.blit(post_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
