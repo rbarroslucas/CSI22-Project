@@ -55,15 +55,15 @@ class Game:
 							self.paused = False
 
 			self.screen.fill('black')
-      pygame.display.get_surface().fill('black')
-      
+			pygame.display.get_surface().fill('black')
+
 			if self.inMainMenu:
 				self.mainMenu.draw()
 			else:
 				self.level.run(self.paused)
 				if self.paused:
 					self.pauseMenu.draw()
-          
+
 			pygame.display.update()
 			self.clock.tick(FPS)
 

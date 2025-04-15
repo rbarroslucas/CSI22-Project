@@ -138,20 +138,12 @@ class Level:
 		else:
 			self.player1.teleport_ghost(self.active_player.get_rect_center())
 
-	def run(self):
+	def run(self, paused):
 		# update and draw the game
 		self.light_surface.fill('black')
 		self.light_surface.set_alpha(255)
-		self.visible_sprites.update()
-		self.visible_sprites.custom_draw(self.active_player, self.inactive_player, self.light_post, self.light_surface)
-
-		self.light_post.update(self.get_player_sight())
-		return self.player1.sight()
-
-	def run(self, paused):
-		# update and draw the game
 		if not paused:
 			self.visible_sprites.update()
-		self.visible_sprites.custom_draw(self.active_player, self.light_post, self.light_surface)
+		self.visible_sprites.custom_draw(self.active_player, self.inactive_player, self.light_post, self.light_surface)
 
 		self.light_post.update(self.get_player_sight())
