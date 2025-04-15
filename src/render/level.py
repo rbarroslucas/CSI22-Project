@@ -150,5 +150,5 @@ class Level:
 		if not interfaceActive:
 			self.visible_sprites.update()
 		self.visible_sprites.custom_draw(self.active_player, self.inactive_player, self.light_post, self.light_surface)
-    self.inventory.draw(pygame.display.get_surface())
+		self.inventory.draw(pygame.display.get_surface())
 		self.light_post.update(self.get_player_sight())
