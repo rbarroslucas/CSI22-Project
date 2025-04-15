@@ -7,7 +7,7 @@ from interfaces.game_over import GameOverMenu
 from game_states import GameState
 
 class Game:
-	def __init__(self):
+	def __init__(self, levels):
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
 		self.surface = pygame.Surface((WIDTH, HEIGTH), pygame.SRCALPHA)
@@ -22,7 +22,9 @@ class Game:
 		#main_sound.set_volume(0.5)
 		#main_sound.play(loops = -1)
 
-		self.level = Level()
+		self.levels = [Level(f'./layouts/{i}.tmx') for i in levels]
+		self.level = self.levels[0]
+
 		self.pauseMenu = PauseMenu()
 		self.mainMenu = MainMenu()
 		self.gameOverMenu = GameOverMenu()
@@ -85,5 +87,6 @@ class Game:
 			self.clock.tick(FPS)
 
 if __name__ == '__main__':
-	game = Game()
+	levels = ['sala1', 'sala2', 'sala3', 'sala4']
+	game = Game(levels)
 	game.run()
