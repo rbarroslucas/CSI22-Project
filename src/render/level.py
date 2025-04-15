@@ -10,7 +10,7 @@ from characters.player import Player
 from characters.enemy import Enemy
 from characters.particle import Particle
 from interfaces.inventory import Inventory
-
+from game_states import GameState
 
 class Level:
 	def __init__(self):
@@ -136,9 +136,9 @@ class Level:
 			self.switch_changes(self.player1, self.player2)
 		elif self.active_player == self.player2 and not self.player1.check_death():
 			self.switch_changes(self.player2, self.player1)
-		elif self.player1.check_death() and self.player2.check_death():
-			#Acabou
-			print("GG")
+
+	def is_game_over(self):
+		return self.player1.check_death() and self.player2.check_death()
 
 	def drag_ghost(self):
 		if self.active_player == self.player1:
@@ -146,11 +146,11 @@ class Level:
 		else:
 			self.player1.teleport_ghost(self.active_player.get_rect_center())
 
-	def run(self, interfaceActive):
+	def run(self, state):
 		# update and draw the game
 		self.light_surface.fill('black')
 		self.light_surface.set_alpha(255)
-		if not interfaceActive:
+		if state == GameState.PLAYING:
 			self.visible_sprites.update()
 		self.visible_sprites.custom_draw(self.active_player, self.inactive_player, self.light_post, self.light_surface)
 		self.inventory.draw(pygame.display.get_surface())
