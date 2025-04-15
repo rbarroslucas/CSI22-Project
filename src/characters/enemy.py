@@ -23,8 +23,14 @@ class Enemy(Entity):
         self.animate_speed = 6/FPS
         self.import_enemy_assets(name)
 
+        #radius
+        
+        self.attack_radius = 5*TILESIZE
+        self.persecute_radius = 7*TILESIZE
+        self.evade_radius = 2*TILESIZE        
+        
         # ai stuff
-        self.evasion_angle = math.pi/3
+        self.evasion_angle = math.pi/6
 
         self.get_player_pos = get_player_pos
         self.get_player_sight = get_player_sight
@@ -37,39 +43,46 @@ class Enemy(Entity):
         player_pos = self.get_player_pos()
         player_sight = self.get_player_sight()
 
-        direction_perp = pygame.math.Vector2(0, 0)
+        enemy_pos = pygame.math.Vector2(self.rect.center[0], self.rect.center[1])
+        delta = enemy_pos - player_pos
+        
+        self.direction = pygame.math.Vector2(0, 0)
+        
+        if delta.magnitude() < self.persecute_radius:
+            direction_perp = pygame.math.Vector2(0, 0)
 
-        delta_x = self.rect.center[0] - player_pos[0]
-        delta_y = self.rect.center[1] - player_pos[1]
+            alpha = math.atan2(player_sight.y, player_sight.x)
+            omega = math.atan2(delta.y, delta.x)
 
-        alpha = math.atan2(player_sight.y, player_sight.x)
-        omega = math.atan2(delta_y, delta_x)
+            if omega < self.evasion_angle + alpha and omega >= alpha:
+                direction_perp.x +=  -player_sight.y
+                direction_perp.y += player_sight.x
+            elif omega > -self.evasion_angle + alpha and omega < alpha:
+                direction_perp.x +=  player_sight.y
+                direction_perp.y += -player_sight.x
 
-        if omega < self.evasion_angle + alpha and omega >= alpha:
-            direction_perp.x +=  -player_sight.y
-            direction_perp.y += player_sight.x
-        elif omega > -self.evasion_angle + alpha and omega < alpha:
-            direction_perp.x +=  player_sight.y
-            direction_perp.y += -player_sight.x
+            if delta.x > 0:
+                self.direction.x = -1
+            elif delta.x < 0:
+                self.direction.x = 1
+            else:
+                self.direction.x = 0
 
-        if delta_x > 0:
-            self.direction.x = -1
-        elif delta_x < 0:
-            self.direction.x = 1
-        else:
-            self.direction.x = 0
+            if delta.y > 0:
+                self.direction.y = -1
+            elif delta.y < 0:
+                self.direction.y = 1
+            else:
+                self.direction.y = 0
+
+            if delta.magnitude() < self.evade_radius:
+                self.direction = -self.direction
             
-        if delta_y > 0:
-            self.direction.y = -1
-        elif delta_y < 0:
-            self.direction.y = 1
-        else:
-            self.direction.y = 0
-
-        if(abs(delta_y) > abs(delta_x)):
-            self.direction.x = direction_perp.x
-        else:
-            self.direction.y = direction_perp.y
+            if direction_perp.magnitude() != 0:
+                if(abs(delta.y) > abs(delta.x)):
+                    self.direction.x = direction_perp.x
+                else:
+                    self.direction.y = direction_perp.y
 
     def animate(self):
         #TO DO

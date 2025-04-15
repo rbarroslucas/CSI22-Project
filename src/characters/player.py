@@ -5,7 +5,7 @@ from characters.entity import Entity
 from characters.particle import Particle
 
 class Player(Entity):
-    def __init__(self, name, pos, create_particle, groups, obstacle_sprite):
+    def __init__(self, name, pos, switch_player, drag_ghost, create_particle, groups, obstacle_sprite):
         path = './graphics/' + name + '/stand_front/' + 'stand_front0.png'
         super().__init__(path, pos, PLAYER_SPEED, groups, obstacle_sprite)
         ##hard coded, change after
@@ -13,6 +13,7 @@ class Player(Entity):
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
         
         #particles
+        self.create_particle = create_particle
         self.particles = []
         self.casting = False
         self.casting_start = 0
@@ -24,7 +25,14 @@ class Player(Entity):
         self.animate_speed = 6/FPS
         self.import_player_assets(name)
         
-        self.create_particle = create_particle
+        self.active = False
+        self.switch_player = switch_player
+        self.switch_cooldown = 400
+        self.switch_start = 0
+        
+        self.drag_ghost = drag_ghost
+        self.drag_cooldown = 400
+        self.drag_start = 0
         
     def import_player_assets(self, name):
         character_path = './graphics/' + name + '/'
@@ -61,6 +69,18 @@ class Player(Entity):
                 direction = self.sight()
                     
                 self.particles.append(self.create_particle('player', self.rect.topleft, direction))
+                
+            current_time = pygame.time.get_ticks()
+            
+            if keys[pygame.K_k]:
+                if current_time - self.drag_start > self.drag_cooldown:
+                    self.drag_start = current_time
+                    self.drag_ghost()
+                
+            if keys[pygame.K_SPACE]:
+                if current_time - self.switch_start >= self.switch_cooldown:
+                    self.switch_start = current_time
+                    self.switch_player()
 
     def sight(self):
         direction = pygame.math.Vector2()
@@ -119,9 +139,17 @@ class Player(Entity):
                 self.particles.remove(particle)
                 particle.kill()
     
+    def set_transparency(self, alpha):
+        if self.image:
+            self.image.set_alpha(alpha)
+            
+    def update_activate(self, bool):
+        self.active = bool
+    
     def update(self):
-        self.input()
-        self.cooldown()
-        self.animate()
-        self.update_particles()
-        self.move(self.obstacle_sprite)
+        if self.active:
+            self.input()
+            self.cooldown()
+            #self.animate()
+            self.update_particles()
+            self.move(self.obstacle_sprite)
