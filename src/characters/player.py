@@ -58,26 +58,30 @@ class Player(Entity):
                 
                 self.casting = True
                 self.casting_start = pygame.time.get_ticks()
-                direction = pygame.math.Vector2()
-                
-                status = self.status.split('_')
-                
-                if 'front' in status[1]:
-                    direction.y = 1
-                elif 'back' in status[1]:
-                    direction.y = -1
-                else:
-                    direction.y = 0
-                    
-                if 'right' in status[1]:
-                    direction.x = 1
-                elif 'left' in status[1]:
-                    direction.x = -1
-                else:
-                    direction.x = 0
+                direction = self.sight()
                     
                 self.particles.append(self.create_particle('player', self.rect.topleft, direction))
 
+    def sight(self):
+        direction = pygame.math.Vector2()
+        status = self.status.split('_')
+        
+        if 'front' in status[1]:
+            direction.y = 1
+        elif 'back' in status[1]:
+            direction.y = -1
+        else:
+            direction.y = 0
+            
+        if 'right' in status[1]:
+            direction.x = 1
+        elif 'left' in status[1]:
+            direction.x = -1
+        else:
+            direction.x = 0
+            
+        return direction
+    
     def cooldown(self):
         current_time = pygame.time.get_ticks()
         
