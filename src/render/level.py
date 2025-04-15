@@ -34,7 +34,7 @@ class Level:
 
 		# ghost glow
 		radius = 200
-		self.ghost_glow = glow(210, radius, BRIGHT_DEFAULT)
+		self.ghost_glow = glow(210, radius, BRIGHT_DEFAULT + 40)
 		self.ghost_glow.set_colorkey((0, 0, 0))
 		self.ghost_glow.set_alpha(255)
 		self.ghost_light = pygame.sprite.Sprite(self.light_post)
@@ -92,8 +92,8 @@ class Level:
 
 
 		# load the player
-		self.enemies.append(Enemy('manga', (376, 288), self.get_player_pos, self.get_player_sight, self.create_particle,
-                            [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
+		#self.enemies.append(Enemy('manga', (376, 288), self.get_player_pos, self.get_player_sight, self.create_particle,
+        #                   [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
 		self.player1 = Player('diogo', (288, 288), self.switch_player, self.drag_ghost,
                         self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
 		self.player2 = Player('lucas', (288, 288), self.switch_player, self.drag_ghost,
