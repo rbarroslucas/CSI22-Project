@@ -31,8 +31,8 @@ class Level:
   
 		#Selects active player
 		self.active_player = self.player1
-		self.player1.active = True
-		self.player2.set_transparency(128)
+		self.player1.change_active(True)
+		self.player2.set_transparency(GHOST_ALPHA)
 
 	def render(self, surface):
 		si = self.tmxdata.get_tile_image_by_gid
@@ -55,7 +55,8 @@ class Level:
 
 
 		# load the player
-		self.enemies.append(Enemy('diogo', (376, 288), self.get_player_pos, self.get_player_sight, [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
+		self.enemies.append(Enemy('manga', (376, 288), self.get_player_pos, self.get_player_sight, self.create_particle, 
+                            [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
 		self.player1 = Player('diogo', (288, 288), self.switch_player, self.drag_ghost, 
                         self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
 		self.player2 = Player('lucas', (288, 288), self.switch_player, self.drag_ghost,
@@ -70,9 +71,12 @@ class Level:
 	def create_particle(self, caller, pos, direction):
 		if caller == 'player':
 			return Particle(pos, direction, [self.visible_sprites], self.player_attackable_sprite)
+		elif caller == 'enemy':
+			return Particle(pos, direction, [self.visible_sprites], self.enemy_attackable_sprite)
 
 	def get_player_pos(self):
-		pos = pygame.math.Vector2(self.active_player.rect.center[0], self.active_player.rect.center[1])
+		rect = self.active_player.get_rect_center()
+		pos = pygame.math.Vector2(rect[0], rect[1])
 		return pos
 
 	def get_player_sight(self):
@@ -81,8 +85,8 @@ class Level:
 
 	def switch_changes(self, p1, p2):
 		self.active_player = p2
-		p1.active = False
-		p2.active = True
+		p1.change_active(False)
+		p2.change_active(True)
 		self.enemy_attackable_sprite.remove(p1)
 		self.enemy_attackable_sprite.add(p2)
 		p1.set_transparency(GHOST_ALPHA)
@@ -97,11 +101,9 @@ class Level:
    	
 	def drag_ghost(self):
 		if self.active_player == self.player1:
-			self.player2.rect.center = self.active_player.rect.center
-			self.player2.hitbox = self.player2.rect
+			self.player2.teleport_ghost(self.active_player.get_rect_center())
 		else:
-			self.player1.rect.center = self.active_player.rect.center
-			self.player1.hitbox = self.player1.rect
+			self.player1.teleport_ghost(self.active_player.get_rect_center())
    
 	def run(self):
 		# update and draw the game

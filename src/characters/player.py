@@ -102,13 +102,6 @@ class Player(Entity):
             
         return direction
     
-    def cooldown(self):
-        current_time = pygame.time.get_ticks()
-        
-        if self.casting:
-            if current_time - self.casting_start >= self.casting_cooldown:
-                self.casting = False
-    
     def animate(self):
         status_aux = 'walk_'
         
@@ -132,19 +125,19 @@ class Player(Entity):
             self.frame_index = 0
         self.image = self.animations[self.status][int(self.frame_index)]
     
-    def update_particles(self):
-        for particle in self.particles[:]:
-            eliminate = particle.check_kill(self.rect.center)
-            if eliminate:
-                self.particles.remove(particle)
-                particle.kill()
-    
     def set_transparency(self, alpha):
         if self.image:
             self.image.set_alpha(alpha)
             
-    def update_activate(self, bool):
+    def change_active(self, bool):
         self.active = bool
+    
+    def teleport_ghost(self, pos):
+        self.rect.center = pos
+        self.hitbox = self.rect
+    
+    def get_rect_center(self):
+        return self.rect.center
     
     def update(self):
         if self.active:
