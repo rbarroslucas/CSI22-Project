@@ -14,3 +14,12 @@ def import_folder(path):
             surface_list.append(image_surf)
 
     return surface_list
+
+def clamp(value, mini, maxi):
+    """Clamp value between mini and maxi"""
+    if value < mini:
+        return mini
+    elif maxi < value:
+        return maxi
+    else:
+        return value
