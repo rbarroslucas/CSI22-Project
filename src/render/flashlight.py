@@ -24,10 +24,14 @@ def make_rings(radius, layers, angle, theta):
     start_angle = angle - (theta / 2)
     end_angle = angle + (theta / 2)
     for i in range(layers):
-        brightness = min(2*(i * 255 / layers), 255)
+        brightness = max(min((i * 255 / layers), 255), 100)
         ring_radius = radius - (radius / layers) * (i + 1)
-        ring_sector = create_circle_sector(ring_radius, start_angle, end_angle, 50, max(brightness, BRIGHT_DEFAULT))
-        ring_sector.set_alpha(i * 255 / layers)
+        ring_sector = create_circle_sector(ring_radius, start_angle, end_angle, 50, brightness)
+        if brightness < 160:
+            alpha = 0
+        else:
+            alpha = i * 255 / layers
+        ring_sector.set_alpha(alpha)
         surface.blit(ring_sector, (radius - ring_radius, radius - ring_radius))
     return surface
 
@@ -36,7 +40,7 @@ def glow(glow, radius, end):
     surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
     delta = glow - end
     glow = clamp(glow, 0, 255)
-    for i in range(layers):
+    for i in reversed(range(layers)):
         k = glow - (delta / layers) * i
         k = clamp(k, 0, 255)
         r = i * (radius)/layers

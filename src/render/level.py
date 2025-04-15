@@ -20,21 +20,10 @@ class Level:
 		self.player_attackable_sprite = pygame.sprite.Group()
 		self.enemy_attackable_sprite  = pygame.sprite.Group()
 
-		# shadows
-		self.dark = pygame.Surface((WIDTH*10, HEIGTH))
-		self.dark.fill('black')
-		self.darkness = pygame.sprite.Sprite(self.light_post)
-		self.darkness.target = 'none'
-		self.darkness.image = self.dark
-		self.darkness.rect = self.dark.get_rect(topleft=(0, 0))
-		self.darkness.alpha = 255
-		self.darkness.image.set_alpha(self.darkness.alpha)
-
 		# light surfaces
-
 		# circle glow
 		radius = 1000
-		self.circle_surface = glow(150, radius, BRIGHT_DEFAULT)
+		self.circle_surface = glow(100, radius, BRIGHT_DEFAULT)
 		self.circle_surface.set_colorkey((0, 0, 0))
 		self.circle_surface.set_alpha(255)
 		self.light_circle = pygame.sprite.Sprite(self.light_post)
@@ -42,9 +31,17 @@ class Level:
 		self.light_circle.image = self.circle_surface
 
 		# ghost glow
+		radius = 200
+		self.ghost_glow = glow(240, radius, BRIGHT_DEFAULT)
+		self.ghost_glow.set_colorkey((0, 0, 0))
+		self.ghost_glow.set_alpha(255)
+		self.ghost_light = pygame.sprite.Sprite(self.light_post)
+		self.ghost_light.target = 'ghost'
+		self.ghost_light.image = self.ghost_glow
+		self.ghost_light.rect = self.ghost_glow.get_rect(topleft=(0,0))
 
 		# flashlight
-		self.flashlight = Flashlight((0, 0), math.pi/3, [self.light_post], 350)
+		self.flashlight = Flashlight((0, 0), math.pi/3, [self.light_post], 700)
 		self.flashlight.target = 'main'
 		self.flashlight.image.set_colorkey((0, 0, 0))
 		self.flashlight.image.set_alpha(255)

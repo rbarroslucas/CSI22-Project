@@ -34,9 +34,6 @@ class YSortCameraGroup(pygame.sprite.Group):
 			if sprite.target == 'main':
 				image = sprite.image
 				post_surface.blit(sprite.image, (self.half_width - image.get_width()/2, self.half_height - image.get_height()/2))
-			elif sprite.target == 'none':
-				image = sprite.image
-				post_surface.blit(sprite.image, (sprite.rect.topleft - self.offset))
 			elif sprite.target == 'ghost':
 				offset_pos = second.rect.center - self.offset - pygame.math.Vector2(sprite.rect.width/2, sprite.rect.height/2)
 				image = sprite.image
