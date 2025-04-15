@@ -9,6 +9,8 @@ from render.flashlight import *
 from characters.player import Player
 from characters.enemy import Enemy
 from characters.particle import Particle
+from interfaces.inventory import Inventory
+
 
 class Level:
 	def __init__(self):
@@ -60,11 +62,14 @@ class Level:
 		# construct the map
 		self.make_map()
 
+
+		self.inventory = Inventory()
 		#Selects active player
 		self.active_player = self.player1
 		self.inactive_player = self.player2
 		self.player1.change_active(True)
 		self.player2.set_transparency(GHOST_ALPHA)
+
 
 	def render(self, surface):
 		si = self.tmxdata.get_tile_image_by_gid
@@ -138,12 +143,12 @@ class Level:
 		else:
 			self.player1.teleport_ghost(self.active_player.get_rect_center())
 
-	def run(self, paused):
+	def run(self, interfaceActive):
 		# update and draw the game
 		self.light_surface.fill('black')
 		self.light_surface.set_alpha(255)
-		if not paused:
+		if not interfaceActive:
 			self.visible_sprites.update()
 		self.visible_sprites.custom_draw(self.active_player, self.inactive_player, self.light_post, self.light_surface)
-
+    self.inventory.draw(pygame.display.get_surface())
 		self.light_post.update(self.get_player_sight())
