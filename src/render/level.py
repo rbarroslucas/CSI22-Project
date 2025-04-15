@@ -13,7 +13,7 @@ from interfaces.inventory import Inventory
 
 
 class Level:
-	def __init__(self):
+	def __init__(self, map):
 		# sprite group setup
 		self.visible_sprites = YSortCameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
@@ -53,7 +53,7 @@ class Level:
 		self.light_surface = pygame.Surface((WIDTH, HEIGTH))
 
 		# load the map
-		self.map = TiledMap('./layouts/teste.tmx')
+		self.map = TiledMap(map)
 		self.tmxdata = self.map.tmxdata
 
 		# current enemies
@@ -83,21 +83,25 @@ class Level:
 						surface.blit(tile, (x * self.tmxdata.tilewidth * SCALE_FACTOR,
 						  					y * self.tmxdata.tileheight * SCALE_FACTOR))
 		for tile_object in self.tmxdata.objects:
-			if tile_object.type == 'Obstacle':
-				tile = pygame.Surface((tile_object.width * SCALE_FACTOR,
-						   			   tile_object.height * SCALE_FACTOR))
-				x = tile_object.x * SCALE_FACTOR
-				y = tile_object.y * SCALE_FACTOR
+
+			tile = pygame.Surface((tile_object.width * SCALE_FACTOR,
+									tile_object.height * SCALE_FACTOR))
+			x = tile_object.x * SCALE_FACTOR
+			y = tile_object.y * SCALE_FACTOR
+
+			if tile_object.type == 'Spawn':
+				if tile_object.name == 'P1':
+					self.player1 = Player('diogo', (x, y), self.switch_player, self.drag_ghost,
+                        self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
+				elif tile_object.name == 'P2':
+					self.player2 = Player('lucas', (x, y), self.switch_player, self.drag_ghost,
+                        self.create_particle, [self.visible_sprites], self.obstacle_sprites)
+				elif tile_object.name == 'Enemy':
+					self.enemies.append(Enemy('manga', (x, y), self.get_player_pos, self.get_player_sight, self.create_particle,
+												[self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
+			else:
 				Obstacle((x, y), tile, [self.obstacle_sprites])
 
-
-		# load the player
-		self.enemies.append(Enemy('manga', (376, 288), self.get_player_pos, self.get_player_sight, self.create_particle,
-                            [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
-		self.player1 = Player('diogo', (288, 288), self.switch_player, self.drag_ghost,
-                        self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
-		self.player2 = Player('lucas', (288, 288), self.switch_player, self.drag_ghost,
-                        self.create_particle, [self.visible_sprites], self.obstacle_sprites)
 
 	def make_map(self):
 		floor_surf = pygame.Surface((self.map.width * SCALE_FACTOR,
