@@ -80,7 +80,7 @@ class Player(Entity):
                     self.switch_start = current_time
                     self.switch_player()
 
-            if keys[pygame.K_f]:
+            if keys[pygame.K_l]:
                 if current_time - self.interact_start > self.interact_cooldown:
                     self.interact_start = current_time
                     self.interact()

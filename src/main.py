@@ -17,10 +17,10 @@ class Game:
 		self.state = GameState.MAIN_MENU
   
 		# soundtrack
-		pygame.mixer.init()
-		main_sound = pygame.mixer.Sound('./audio/main.ogg')
-		main_sound.set_volume(0.5)
-		main_sound.play(loops = -1)
+		#pygame.mixer.init()
+		#main_sound = pygame.mixer.Sound('./audio/main.ogg')
+		#main_sound.set_volume(0.5)
+		#main_sound.play(loops = -1)
 
 		self.level = Level()
 		self.pauseMenu = PauseMenu()
