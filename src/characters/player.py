@@ -8,7 +8,7 @@ class Player(Entity):
         super().__init__(path, pos, create_particle, PLAYER_SPEED, groups, obstacle_sprite)
         ##hard coded, change after
         self.hitbox = self.rect.inflate(-self.rect.width//2, -self.rect.height//2)
-        self.hitbox = self.hitbox.move(0, self.rect.height//3)
+        self.hitbox = self.hitbox.move(0, self.rect.height//4)
         self.particle_path = './graphics/player_particle'
 
         #particles
