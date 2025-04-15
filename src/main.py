@@ -64,9 +64,7 @@ class Game:
 						self.level = Level()
 					elif action == "main_menu":
 						self.state = GameState.MAIN_MENU
-					elif action == "quit":
-						pygame.quit()
-						sys.exit()
+						self.level = Level()
 
 			# Draw
 			self.screen.fill('black')

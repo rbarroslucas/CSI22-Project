@@ -1,6 +1,8 @@
 # interfaces/inventory.py
 import pygame
-
+from weapons.weapon import Weapon
+from items.healing_potion import HealingPotion
+from items.strength_potion import StrengthPotion
 
 class Inventory:
     def __init__(self):
@@ -10,13 +12,22 @@ class Inventory:
         self.slot_margin = 8
         self.weapon_margin = 64  # Espaçamento adicional entre arma e itens
         self.font = pygame.font.Font(None, 24)
-        self.selected_item = None  # Nenhum slot selecionado inicialmente
 
         # Posição dos slots
         screen = pygame.display.get_surface()
         self.weapon_x = screen.get_width() // 2 - (self.slot_size + self.slot_margin) * 3 - self.weapon_margin
         self.y = screen.get_height() - self.slot_size - 20
         self.item_start_x = self.weapon_x + self.slot_size + self.weapon_margin  # Espaçamento maior aqui
+
+    def change_weapon(self, newWeapon):
+        self.weapon = newWeapon
+
+    def pick_potion(self, newPotion):
+        for i in range(len(self.items)):
+            if self.items[i] is None:
+                self.items[i] = newPotion
+                break
+
 
     def draw(self, surface):
         # Arma (não selecionável)
@@ -25,7 +36,7 @@ class Inventory:
         pygame.draw.rect(surface, (30, 30, 30), weapon_rect, 3)
 
         if self.weapon:
-            text = self.font.render(str(self.weapon), True, (255, 255, 255))
+            text = self.font.render(str(self.weapon.name), True, (255, 255, 255))
             surface.blit(text, text.get_rect(center=weapon_rect.center))
 
         # Itens (com seleção)
@@ -33,13 +44,8 @@ class Inventory:
             x = self.item_start_x + i * (self.slot_size + self.slot_margin)
             rect = pygame.Rect(x, self.y, self.slot_size, self.slot_size)
 
-            # Cor do slot (selecionado ou não)
-            if self.selected_item == i:
-                pygame.draw.rect(surface, (100, 100, 150), rect)  # Slot selecionado
-                pygame.draw.rect(surface, (255, 255, 255), rect, 3)  # Borda branca
-            else:
-                pygame.draw.rect(surface, (60, 60, 60), rect)  # Slot normal
-                pygame.draw.rect(surface, (30, 30, 30), rect, 3)  # Borda escura
+            pygame.draw.rect(surface, (60, 60, 60), rect)  # Slot normal
+            pygame.draw.rect(surface, (30, 30, 30), rect, 3)  # Borda escura
 
             if item:
                 text = self.font.render(str(item), True, (255, 255, 255))
@@ -49,7 +55,6 @@ class Inventory:
         if event.type == pygame.KEYDOWN:
             if pygame.K_1 <= event.key <= pygame.K_5:
                 index = event.key - pygame.K_1
-                self.selected_item = index
                 self.use_item(index)
 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -60,7 +65,6 @@ class Inventory:
                 x = self.item_start_x + i * (self.slot_size + self.slot_margin)
                 rect = pygame.Rect(x, self.y, self.slot_size, self.slot_size)
                 if rect.collidepoint(mouse_pos):
-                    self.selected_item = i
                     self.use_item(i)
                     return
 

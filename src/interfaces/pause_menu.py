@@ -19,11 +19,9 @@ class PauseMenu:
         button_width, button_height = 250, 60
         center_x = WIDTH // 2 - button_width // 2
         self.buttons = [
-            {"rect": pygame.Rect(center_x, HEIGTH // 2 - 100, button_width, button_height), "text": "Continuar",
+            {"rect": pygame.Rect(center_x, HEIGTH // 2 - 30, button_width, button_height), "text": "Continuar",
              "action": "continue"},
-            {"rect": pygame.Rect(center_x, HEIGTH // 2, button_width, button_height), "text": "Opções",
-             "action": "options"},
-            {"rect": pygame.Rect(center_x, HEIGTH // 2 + 100, button_width, button_height), "text": "Menu Principal",
+            {"rect": pygame.Rect(center_x, HEIGTH // 2 + 50, button_width, button_height), "text": "Menu Principal",
              "action": "main_menu"}
         ]
 

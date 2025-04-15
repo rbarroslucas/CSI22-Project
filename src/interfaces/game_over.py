@@ -23,8 +23,6 @@ class GameOverMenu:
              "action": "retry"},
             {"rect": pygame.Rect(center_x, HEIGTH // 2 + 90, button_width, button_height), "text": "Menu Principal",
              "action": "main_menu"},
-            {"rect": pygame.Rect(center_x, HEIGTH // 2 + 180, button_width, button_height), "text": "Sair",
-             "action": "quit"}
         ]
 
     def draw(self):
