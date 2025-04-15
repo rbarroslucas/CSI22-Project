@@ -105,11 +105,11 @@ class Level:
 		self.render(floor_surf)
 		self.visible_sprites.set_floor(floor_surf)
 
-	def create_particle(self, caller, pos, direction):
+	def create_particle(self, caller, path, pos, direction):
 		if caller == 'player':
-			return Particle("./graphics/1.png", pos, direction, 1, [self.visible_sprites], self.player_attackable_sprite)
+			return Particle(path, pos, direction, 1, [self.visible_sprites], self.player_attackable_sprite)
 		elif caller == 'enemy':
-			return Particle("./graphics/1.png", pos, direction, 1, [self.visible_sprites], self.enemy_attackable_sprite)
+			return Particle(path, pos, direction, 1, [self.visible_sprites], self.enemy_attackable_sprite)
 
 	def get_player_pos(self):
 		rect = self.active_player.get_rect_center()

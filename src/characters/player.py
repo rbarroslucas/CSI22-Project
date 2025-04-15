@@ -8,6 +8,7 @@ class Player(Entity):
         super().__init__(path, pos, create_particle, PLAYER_SPEED, groups, obstacle_sprite)
         ##hard coded, change after
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
+        self.particle_path = './graphics/player_particle'
 
         #particles
         self.casting_cooldown = 400
@@ -55,7 +56,7 @@ class Player(Entity):
                 self.casting_start = pygame.time.get_ticks()
                 direction = self.sight()
 
-                self.particles.append(self.create_particle('player', self.rect.topleft, direction))
+                self.particles.append(self.create_particle('player', self.particle_path, self.rect.topleft, direction))
 
             current_time = pygame.time.get_ticks()
 
