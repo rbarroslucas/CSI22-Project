@@ -1,16 +1,17 @@
 import pygame
 from settings import *
 from characters.entity import Entity
+from interfaces.inventory import Inventory
 
 class Player(Entity):
-    def __init__(self, name, pos, switch_player, drag_ghost, create_particle, groups, obstacle_sprite):
+    def __init__(self, name, pos, switch_player, drag_ghost, interact, create_particle, groups, obstacle_sprite):
         path = './graphics/' + name + '/stand_front/' + 'stand_front0.png'
         super().__init__(path, pos, create_particle, PLAYER_SPEED, groups, obstacle_sprite)
         ##hard coded, change after
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
 
         #particles
-        self.casting_cooldown = 400
+        self.casting_cooldown = 0
 
         #animation
         self.animations = {'stand_front': [], 'stand_frontright': [], 'stand_frontleft': [], 'stand_back': [], 'stand_backright': [], 'stand_backleft': [], 'stand_right': [], 'stand_left': [],
@@ -25,8 +26,15 @@ class Player(Entity):
         self.drag_ghost = drag_ghost
         self.drag_cooldown = 400
         self.drag_start = 0
-        
+
+        self.interact = interact
+        self.interact_cooldown = 400
+        self.interact_start = 0
+
+        self.inventory = Inventory()
+
         self.health = 3
+        self.max_health = 3
         self.invencible_time = 100
         self.invencible_start = 0
 
@@ -48,14 +56,15 @@ class Player(Entity):
                 self.direction.x = 0
 
             if keys[pygame.K_j]:
-                self.direction.x = 0
-                self.direction.y = 0
+                if self.inventory.weapon:
+                    self.direction.x = 0
+                    self.direction.y = 0
 
-                self.casting = True
-                self.casting_start = pygame.time.get_ticks()
-                direction = self.sight()
+                    self.casting = True
+                    self.casting_start = pygame.time.get_ticks()
+                    direction = self.sight()
 
-                self.particles.append(self.create_particle('player', self.rect.topleft, direction))
+                    self.particles.append(self.create_particle('player', self.rect.topleft, direction))
 
             current_time = pygame.time.get_ticks()
 
@@ -68,6 +77,12 @@ class Player(Entity):
                 if current_time - self.switch_start >= self.switch_cooldown:
                     self.switch_start = current_time
                     self.switch_player()
+
+            if keys[pygame.K_f]:
+                if current_time - self.interact_start > self.interact_cooldown:
+                    self.interact_start = current_time
+                    self.interact()
+
 
     def sight(self):
         direction = pygame.math.Vector2()
@@ -145,3 +160,4 @@ class Player(Entity):
             self.animate()
             self.update_particles()
             self.move(self.obstacle_sprite)
+

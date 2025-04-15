@@ -21,17 +21,16 @@ class MainMenu:
         # Botões
         button_width, button_height = 300, 70
         center_x = WIDTH // 2 - button_width // 2
-        button_start_y = HEIGTH // 2 + 60  # aumentamos esse valor para descer os botões
+        button_spacing = 80  # Espaçamento uniforme entre botões
+        button_start_y = HEIGTH // 2 + 40  # Posição inicial um pouco mais acima
 
         self.buttons = [
-            {"rect": pygame.Rect(center_x, button_start_y, button_width, button_height), "text": "Novo Jogo",
-             "action": "new_game"},
-            {"rect": pygame.Rect(center_x, button_start_y + 90, button_width, button_height), "text": "Continuar",
-             "action": "continue"},
-            {"rect": pygame.Rect(center_x, button_start_y + 180, button_width, button_height), "text": "Opções",
-             "action": "options"},
-            {"rect": pygame.Rect(center_x, button_start_y + 270, button_width, button_height), "text": "Sair",
-             "action": "quit"}
+            {"rect": pygame.Rect(center_x, button_start_y, button_width, button_height),
+             "text": "Novo Jogo", "action": "new_game"},
+            {"rect": pygame.Rect(center_x, button_start_y + button_spacing, button_width, button_height),
+             "text": "Continuar", "action": "continue"},
+            {"rect": pygame.Rect(center_x, button_start_y + 2 * button_spacing, button_width, button_height),
+             "text": "Sair", "action": "quit"}
         ]
 
         # Logo

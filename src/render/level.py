@@ -9,8 +9,8 @@ from render.flashlight import *
 from characters.player import Player
 from characters.enemy import Enemy
 from characters.particle import Particle
-from interfaces.inventory import Inventory
 from game_states import GameState
+from weapons.weapon import Weapon
 
 class Level:
 	def __init__(self):
@@ -42,6 +42,12 @@ class Level:
 		self.ghost_light.image = self.ghost_glow
 		self.ghost_light.rect = self.ghost_glow.get_rect(topleft=(0,0))
 
+		# player hearts
+		#self.heart_full = pygame.image.load("assets/hearts/full_heart.png").convert_alpha()
+		#self.heart_empty = pygame.image.load("assets/hearts/empty_heart.png").convert_alpha()
+		self.heart_size = 32
+		self.heart_spacing = 10
+
 		# flashlight
 		self.flashlight = Flashlight((0, 0), math.pi/3, [self.light_post], 700)
 		self.flashlight.target = 'main'
@@ -62,8 +68,6 @@ class Level:
 		# construct the map
 		self.make_map()
 
-
-		self.inventory = Inventory()
 		#Selects active player
 		self.active_player = self.player1
 		self.inactive_player = self.player2
@@ -94,10 +98,13 @@ class Level:
 		# load the player
 		self.enemies.append(Enemy('manga', (376, 288), self.get_player_pos, self.get_player_sight, self.create_particle,
                             [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
-		self.player1 = Player('diogo', (288, 288), self.switch_player, self.drag_ghost,
+		self.player1 = Player('diogo', (288, 288), self.switch_player, self.drag_ghost, self.interact,
                         self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
-		self.player2 = Player('lucas', (288, 288), self.switch_player, self.drag_ghost,
+		self.player2 = Player('lucas', (288, 288), self.switch_player, self.drag_ghost, self.interact,
                         self.create_particle, [self.visible_sprites], self.obstacle_sprites)
+
+		# load dropped weapons
+		self.weapon = Weapon("Initial_Weapon", 1, 400, (500, 400), [self.visible_sprites])
 
 	def make_map(self):
 		floor_surf = pygame.Surface((self.map.width * SCALE_FACTOR,
@@ -107,7 +114,7 @@ class Level:
 
 	def create_particle(self, caller, pos, direction):
 		if caller == 'player':
-			return Particle("./graphics/1.png", pos, direction, 1, [self.visible_sprites], self.player_attackable_sprite)
+			return Particle("./graphics/1.png", pos, direction, self.active_player.inventory.weapon.damage, [self.visible_sprites], self.player_attackable_sprite)
 		elif caller == 'enemy':
 			return Particle("./graphics/1.png", pos, direction, 1, [self.visible_sprites], self.enemy_attackable_sprite)
 
@@ -146,6 +153,38 @@ class Level:
 		else:
 			self.player1.teleport_ghost(self.active_player.get_rect_center())
 
+	def is_near(self, max_distance=100): # Por enquanto, fixo para 1 arma
+		player_pos = pygame.math.Vector2(self.active_player.rect.centerx, self.active_player.rect.centery)
+		item_pos = pygame.math.Vector2(self.weapon.rect.centerx, self.weapon.rect.centery)
+		distance = player_pos.distance_to(item_pos)
+		return distance <= max_distance
+
+	def interact(self): # Por enquanto, fixo para 1 arma
+		if self.is_near(100):
+			self.active_player.inventory.weapon = self.weapon
+			self.active_player.casting_cooldown = self.weapon.cooldown
+
+	def draw_hearts(self, surface):
+		hearts = []
+		for i in range(self.active_player.max_health):
+			if i < self.active_player.health:
+				hearts.append("full")  # Coração cheio
+			else:
+				hearts.append("empty")  # Coração vazio
+		font = pygame.font.Font(None, 36)
+		for i, heart_type in enumerate(hearts):
+			x = 20 + i * (self.heart_size + self.heart_spacing)
+			y = 20
+
+			if heart_type == "full":
+				#surface.blit(self.heart_full, (x, y))
+				color = (255, 0, 0)  # Vermelho
+			else:
+				color = (100, 100, 100)  # Cinza
+				#surface.blit(self.heart_empty, (x, y))
+			text = font.render("♥", True, color)
+			surface.blit(text, (x, y))
+
 	def run(self, state):
 		# update and draw the game
 		self.light_surface.fill('black')
@@ -153,5 +192,6 @@ class Level:
 		if state == GameState.PLAYING:
 			self.visible_sprites.update()
 		self.visible_sprites.custom_draw(self.active_player, self.inactive_player, self.light_post, self.light_surface)
-		self.inventory.draw(pygame.display.get_surface())
+		self.active_player.inventory.draw(pygame.display.get_surface())
+		self.draw_hearts(pygame.display.get_surface())
 		self.light_post.update(self.get_player_sight())
