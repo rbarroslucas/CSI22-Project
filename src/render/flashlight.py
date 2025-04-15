@@ -1,5 +1,6 @@
 import pygame
 import math
+from settings import *
 from support import clamp
 
 def create_circle_sector(radius, start_angle, end_angle, segments=50, brightness = 255):
@@ -23,19 +24,23 @@ def make_rings(radius, layers, angle, theta):
     start_angle = angle - (theta / 2)
     end_angle = angle + (theta / 2)
     for i in range(layers):
-        brightness = (i * 255 // layers)
-        ring_radius = radius - (radius // layers) * (i + 1)
-        ring_sector = create_circle_sector(ring_radius, start_angle, end_angle, 50, brightness)
+        brightness = min(2*(i * 255 / layers), 255)
+        ring_radius = radius - (radius / layers) * (i + 1)
+        ring_sector = create_circle_sector(ring_radius, start_angle, end_angle, 50, max(brightness, BRIGHT_DEFAULT))
+        ring_sector.set_alpha(i * 255 / layers)
         surface.blit(ring_sector, (radius - ring_radius, radius - ring_radius))
     return surface
 
-def glow(glow, radius, layers):
+def glow(glow, radius, end):
+    layers = 100
     surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
+    delta = glow - end
     glow = clamp(glow, 0, 255)
     for i in range(layers):
-        k = i * glow
+        k = glow - (delta / layers) * i
         k = clamp(k, 0, 255)
-        pygame.draw.circle(surf, (k, k, k), surf.get_rect().center, radius - i * 3)
+        r = i * (radius)/layers
+        pygame.draw.circle(surf, (k, k, k, min(2*k, 255)), surf.get_rect().center, r)
     return surf
 
 class Flashlight(pygame.sprite.Sprite):
@@ -46,14 +51,14 @@ class Flashlight(pygame.sprite.Sprite):
         self.current_angle = 0
         self.radius = radius
 
-        self.original_image = make_rings(self.radius, 50, self.start_angle, theta)
+        self.original_image = make_rings(self.radius, 100, self.start_angle, theta)
         self.image = self.original_image
         self.rect = self.image.get_rect(topleft=pos)
 
     def update(self, player_sight):
         angle = math.atan2(player_sight.y, player_sight.x)
         if self.current_angle != angle:
-            self.image = make_rings(self.radius, 20, angle, self.theta)
+            self.image = make_rings(self.radius, 100, angle, self.theta)
             self.current_angle = angle
 
 

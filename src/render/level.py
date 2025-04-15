@@ -21,9 +21,10 @@ class Level:
 		self.enemy_attackable_sprite  = pygame.sprite.Group()
 
 		# shadows
-		self.dark = pygame.Surface((WIDTH, HEIGTH))
+		self.dark = pygame.Surface((WIDTH*10, HEIGTH))
 		self.dark.fill('black')
 		self.darkness = pygame.sprite.Sprite(self.light_post)
+		self.darkness.target = 'none'
 		self.darkness.image = self.dark
 		self.darkness.rect = self.dark.get_rect(topleft=(0, 0))
 		self.darkness.alpha = 255
@@ -32,15 +33,19 @@ class Level:
 		# light surfaces
 
 		# circle glow
-		radius = 100
-		self.circle_surface = glow(10, radius, 10)
+		radius = 1000
+		self.circle_surface = glow(150, radius, BRIGHT_DEFAULT)
 		self.circle_surface.set_colorkey((0, 0, 0))
 		self.circle_surface.set_alpha(255)
 		self.light_circle = pygame.sprite.Sprite(self.light_post)
+		self.light_circle.target = 'main'
 		self.light_circle.image = self.circle_surface
+
+		# ghost glow
 
 		# flashlight
 		self.flashlight = Flashlight((0, 0), math.pi/3, [self.light_post], 350)
+		self.flashlight.target = 'main'
 		self.flashlight.image.set_colorkey((0, 0, 0))
 		self.flashlight.image.set_alpha(255)
 		self.light_post.add(self.flashlight)
@@ -60,6 +65,7 @@ class Level:
 
 		#Selects active player
 		self.active_player = self.player1
+		self.inactive_player = self.player2
 		self.player1.change_active(True)
 		self.player2.set_transparency(GHOST_ALPHA)
 
@@ -114,6 +120,7 @@ class Level:
 
 	def switch_changes(self, p1, p2):
 		self.active_player = p2
+		self.inactive_player = p1
 		p1.change_active(False)
 		p2.change_active(True)
 		self.enemy_attackable_sprite.remove(p1)
@@ -136,7 +143,9 @@ class Level:
 
 	def run(self):
 		# update and draw the game
+		self.light_surface.fill('black')
+		self.light_surface.set_alpha(255)
 		self.visible_sprites.update()
-		self.visible_sprites.custom_draw(self.active_player, self.light_post, self.light_surface)
+		self.visible_sprites.custom_draw(self.active_player, self.inactive_player, self.light_post, self.light_surface)
 
 		self.light_post.update(self.get_player_sight())
