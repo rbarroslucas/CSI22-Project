@@ -32,17 +32,15 @@ class Level:
 		# light surfaces
 
 		# circle glow
-		radius = 50
+		radius = 100
 		self.circle_surface = glow(10, radius, 10)
-		pygame.draw.circle(self.circle_surface, (122, 122, 122), (radius, radius), radius)
 		self.circle_surface.set_colorkey((0, 0, 0))
 		self.circle_surface.set_alpha(255)
 		self.light_circle = pygame.sprite.Sprite(self.light_post)
 		self.light_circle.image = self.circle_surface
 
 		# flashlight
-		self.sector_surface = create_circle_sector(1000, 0, math.pi/3)
-		self.flashlight = Flashlight((0, 0), self.sector_surface, [self.light_post])
+		self.flashlight = Flashlight((0, 0), math.pi/3, [self.light_post], 350)
 		self.flashlight.image.set_colorkey((0, 0, 0))
 		self.flashlight.image.set_alpha(255)
 		self.light_post.add(self.flashlight)

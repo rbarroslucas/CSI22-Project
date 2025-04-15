@@ -2,12 +2,10 @@ import pygame
 import math
 from support import clamp
 
-def create_circle_sector(radius, start_angle, end_angle, segments=50):
+def create_circle_sector(radius, start_angle, end_angle, segments=50, brightness = 255):
     size = (radius * 2, radius * 2)
     surface = pygame.Surface(size, pygame.SRCALPHA)
-
     center = (radius, radius)
-
     points = [center]
 
     for i in range(segments + 1):
@@ -16,9 +14,20 @@ def create_circle_sector(radius, start_angle, end_angle, segments=50):
         y = center[1] + radius * math.sin(angle_segment)
         points.append((x, y))
 
-    pygame.draw.polygon(surface, [255, 255, 255], points)
-
+    pygame.draw.polygon(surface, [brightness, brightness, brightness], points)
     return surface
+
+def make_rings(radius, layers, angle, theta):
+        size = (radius * 2, radius * 2)
+        surface = pygame.Surface(size, pygame.SRCALPHA)
+        start_angle = angle - (theta / 2)
+        end_angle = angle + (theta / 2)
+        for i in range(layers):
+            brightness = (i * 255 // layers)
+            ring_radius = radius - (radius // layers) * (i + 1)
+            ring_sector = create_circle_sector(ring_radius, start_angle, end_angle, 50, brightness)
+            surface.blit(ring_sector, (radius - ring_radius, radius - ring_radius))
+        return surface
 
 def glow(glow, radius, layers):
     surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
@@ -31,23 +40,21 @@ def glow(glow, radius, layers):
     return surf
 
 class Flashlight(pygame.sprite.Sprite):
-    def __init__(self, pos, surface, groups):
+    def __init__(self, pos, theta, groups, radius):
         super().__init__(groups)
-        self.original_image = surface
-        self.image = surface
-        self.theta = math.pi/6
-        self.start_angle = self.theta
-        self.current_angle = self.start_angle
+        self.theta = theta
+        self.start_angle = 0
+        self.current_angle = 0
+        self.radius = radius
+
+        self.original_image = make_rings(self.radius, 50, self.start_angle, theta)
+        self.image = self.original_image
         self.rect = self.image.get_rect(topleft=pos)
-        self.alpha = 255
-        self.fade_speed = 5
 
     def update(self, player_sight):
         angle = math.atan2(player_sight.y, player_sight.x)
         if self.current_angle != angle:
-            self.start_angle = angle - self.theta / 2
-            self.end_angle = angle + self.theta / 2
-            self.image = create_circle_sector(1000, self.start_angle, self.end_angle)
+            self.image = make_rings(self.radius, 20, angle, self.theta)
             self.current_angle = angle
 
 
