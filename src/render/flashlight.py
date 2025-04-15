@@ -18,16 +18,16 @@ def create_circle_sector(radius, start_angle, end_angle, segments=50, brightness
     return surface
 
 def make_rings(radius, layers, angle, theta):
-        size = (radius * 2, radius * 2)
-        surface = pygame.Surface(size, pygame.SRCALPHA)
-        start_angle = angle - (theta / 2)
-        end_angle = angle + (theta / 2)
-        for i in range(layers):
-            brightness = (i * 255 // layers)
-            ring_radius = radius - (radius // layers) * (i + 1)
-            ring_sector = create_circle_sector(ring_radius, start_angle, end_angle, 50, brightness)
-            surface.blit(ring_sector, (radius - ring_radius, radius - ring_radius))
-        return surface
+    size = (radius * 2, radius * 2)
+    surface = pygame.Surface(size, pygame.SRCALPHA)
+    start_angle = angle - (theta / 2)
+    end_angle = angle + (theta / 2)
+    for i in range(layers):
+        brightness = (i * 255 // layers)
+        ring_radius = radius - (radius // layers) * (i + 1)
+        ring_sector = create_circle_sector(ring_radius, start_angle, end_angle, 50, brightness)
+        surface.blit(ring_sector, (radius - ring_radius, radius - ring_radius))
+    return surface
 
 def glow(glow, radius, layers):
     surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
@@ -36,7 +36,6 @@ def glow(glow, radius, layers):
         k = i * glow
         k = clamp(k, 0, 255)
         pygame.draw.circle(surf, (k, k, k), surf.get_rect().center, radius - i * 3)
-
     return surf
 
 class Flashlight(pygame.sprite.Sprite):
