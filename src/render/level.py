@@ -34,7 +34,7 @@ class Level:
 
 		# ghost glow
 		radius = 200
-		self.ghost_glow = glow(210, radius, BRIGHT_DEFAULT)
+		self.ghost_glow = glow(210, radius, BRIGHT_DEFAULT + 40)
 		self.ghost_glow.set_colorkey((0, 0, 0))
 		self.ghost_glow.set_alpha(255)
 		self.ghost_light = pygame.sprite.Sprite(self.light_post)
