@@ -5,19 +5,48 @@ from map.tiledmap import TiledMap
 from map.obstacle import Obstacle
 from render.support import import_csv_layout
 from render.camera import YSortCameraGroup
+from render.flashlight import *
 from characters.player import Player
 from characters.enemy import Enemy
 from characters.particle import Particle
-
 
 class Level:
 	def __init__(self):
 		# sprite group setup
 		self.visible_sprites = YSortCameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
+		self.light_post = pygame.sprite.Group()
 
 		self.player_attackable_sprite = pygame.sprite.Group()
 		self.enemy_attackable_sprite  = pygame.sprite.Group()
+
+		# shadows
+		self.dark = pygame.Surface((WIDTH, HEIGTH))
+		self.dark.fill('black')
+		self.darkness = pygame.sprite.Sprite(self.light_post)
+		self.darkness.image = self.dark
+		self.darkness.rect = self.dark.get_rect(topleft=(0, 0))
+		self.darkness.alpha = 255
+		self.darkness.image.set_alpha(self.darkness.alpha)
+
+		# light surfaces
+
+		# circle glow
+		radius = 100
+		self.circle_surface = glow(10, radius, 10)
+		self.circle_surface.set_colorkey((0, 0, 0))
+		self.circle_surface.set_alpha(255)
+		self.light_circle = pygame.sprite.Sprite(self.light_post)
+		self.light_circle.image = self.circle_surface
+
+		# flashlight
+		self.flashlight = Flashlight((0, 0), math.pi/3, [self.light_post], 350)
+		self.flashlight.image.set_colorkey((0, 0, 0))
+		self.flashlight.image.set_alpha(255)
+		self.light_post.add(self.flashlight)
+
+		# lights and shadows surface
+		self.light_surface = pygame.Surface((WIDTH, HEIGTH))
 
 		# load the map
 		self.map = TiledMap('./layouts/teste.tmx')
@@ -108,4 +137,7 @@ class Level:
 	def run(self):
 		# update and draw the game
 		self.visible_sprites.update()
+		self.visible_sprites.custom_draw(self.player1, self.light_post, self.light_surface)
+
+		self.light_post.update(self.get_player_sight())
 		self.visible_sprites.custom_draw(self.active_player)
