@@ -27,7 +27,7 @@ def make_rings(radius, layers, angle, theta):
         brightness = max(min((i * 255 / layers), 255), 100)
         ring_radius = radius - (radius / layers) * (i + 1)
         ring_sector = create_circle_sector(ring_radius, start_angle, end_angle, 50, brightness)
-        if brightness < 160:
+        if brightness < 140:
             alpha = 0
         else:
             alpha = i * 255 / layers
@@ -55,14 +55,14 @@ class Flashlight(pygame.sprite.Sprite):
         self.current_angle = 0
         self.radius = radius
 
-        self.original_image = make_rings(self.radius, 100, self.start_angle, theta)
+        self.original_image = make_rings(self.radius, 15, self.start_angle, theta)
         self.image = self.original_image
         self.rect = self.image.get_rect(topleft=pos)
 
     def update(self, player_sight):
         angle = math.atan2(player_sight.y, player_sight.x)
         if self.current_angle != angle:
-            self.image = make_rings(self.radius, 100, angle, self.theta)
+            self.image = make_rings(self.radius, 15, angle, self.theta)
             self.current_angle = angle
 
 
