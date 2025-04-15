@@ -58,6 +58,7 @@ class Game:
 							self.paused = False
 
 			self.screen.fill('black')
+			pygame.display.get_surface().fill('black')
 
 			if self.inMainMenu:
 				self.mainMenu.draw()

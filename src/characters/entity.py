@@ -22,6 +22,20 @@ class Entity(Colidable):
             elif self.direction.y<0:
                 self.hitbox.top = sprite.hitbox.bottom
     
+    def cooldown(self):
+        current_time = pygame.time.get_ticks()
+        
+        if self.casting:
+            if current_time - self.casting_start >= self.casting_cooldown:
+                self.casting = False
+                
+    def update_particles(self):
+        for particle in self.particles[:]:
+            eliminate = particle.check_kill(self.rect.center)
+            if eliminate:
+                self.particles.remove(particle)
+                particle.kill()
+    
     @abstractmethod
     def update(self):
         pass
