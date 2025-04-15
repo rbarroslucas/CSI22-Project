@@ -143,6 +143,6 @@ class Player(Entity):
         if self.active:
             self.input()
             self.cooldown()
-            #self.animate()
+            self.animate()
             self.update_particles()
             self.move(self.obstacle_sprite)
