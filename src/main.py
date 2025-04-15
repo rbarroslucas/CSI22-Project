@@ -14,6 +14,7 @@ class Game:
 
 		self.paused = False
 		self.inMainMenu = True
+		self.inventory = False
 
 		self.level = Level()
 		self.pauseMenu = PauseMenu()
@@ -28,6 +29,8 @@ class Game:
 				elif event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_ESCAPE:
 						self.paused = not self.paused
+					if event.key == pygame.K_i:
+						self.inventory = not self.inventory
 				elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 					if self.inMainMenu:  # Menu principal
 						action = self.mainMenu.handle_event(event)
@@ -59,7 +62,7 @@ class Game:
 			if self.inMainMenu:
 				self.mainMenu.draw()
 			else:
-				self.level.run(self.paused)
+				self.level.run((self.paused or self.inventory))
 				if self.paused:
 					self.pauseMenu.draw()
 

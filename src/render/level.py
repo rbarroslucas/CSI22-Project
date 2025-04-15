@@ -8,7 +8,7 @@ from render.camera import YSortCameraGroup
 from characters.player import Player
 from characters.enemy import Enemy
 from characters.particle import Particle
-
+from interfaces.inventory import Inventory
 
 class Level:
 	def __init__(self):
@@ -28,6 +28,8 @@ class Level:
 
 		# construct the map
 		self.make_map()
+
+		self.inventory = Inventory()
 
 	def render(self, surface):
 		si = self.tmxdata.get_tile_image_by_gid
@@ -69,8 +71,9 @@ class Level:
 	def get_player_sight(self):
 		return self.player1.sight()
 
-	def run(self, paused):
+	def run(self, interfaceActive):
 		# update and draw the game
-		if not paused:
+		if not interfaceActive:
 			self.visible_sprites.update()
 		self.visible_sprites.custom_draw(self.player1)
+		self.inventory.draw(pygame.display.get_surface())
