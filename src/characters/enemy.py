@@ -1,35 +1,23 @@
 import pygame
 import math
-from characters.entity import Entity
 from settings import *
 from support import import_folder
+from characters.entity import Entity
 
 class Enemy(Entity):
     def __init__(self, name, pos, get_player_pos, get_player_sight, create_particle, groups, obstacle_sprite):
         path = './graphics/' + name + '/stand_front/' + 'stand_front0.png'
-        super().__init__(path, pos, ENEMY_SPEED, groups, obstacle_sprite)
-
-        self.enemy_surface = pygame.Surface((TILESIZE, TILESIZE))
-        self.enemy_surface.fill('blue')
-        self.image = self.enemy_surface
-        self.rect = self.image.get_rect(topleft=pos)
-
+        super().__init__(path, pos, create_particle, ENEMY_SPEED, groups, obstacle_sprite)
         ##hard coded, change after
-        self.obstacle_sprite = obstacle_sprite
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
 
         #particles
-        self.create_particle = create_particle
-        self.particles = []
-        self.casting = False
-        self.casting_start = 0
         self.casting_cooldown = 800
         
         #animation
-        self.status = 'stand_front'
-        self.frame_index = 0
-        self.animate_speed = 6/FPS
-        self.import_enemy_assets(name)
+        self.animations = {'stand_front': [], 'stand_back': [], 'stand_right': [], 'stand_left': [],
+                           'walk_front': [], 'walk_back': [],  'walk_right': [], 'walk_left': []}
+        self.import_assets(name)
 
         #radius
         self.attack_radius = 5*TILESIZE
@@ -45,15 +33,6 @@ class Enemy(Entity):
         self.health = 3
         self.invencible_time = 100
         self.invencible_start = 0
-
-    def import_enemy_assets(self, name):
-        character_path = './graphics/' + name + '/'
-        self.animations = {'stand_front': [], 'stand_back': [], 'stand_right': [], 'stand_left': [],
-                           'walk_front': [], 'walk_back': [],  'walk_right': [], 'walk_left': []}
-        
-        for animation in self.animations.keys():
-            full_path = character_path + animation
-            self.animations[animation] = import_folder(full_path)
 
     def action(self):
         player_pos = self.get_player_pos()

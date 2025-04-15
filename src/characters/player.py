@@ -1,29 +1,21 @@
 import pygame
 from settings import *
-from support import import_folder
 from characters.entity import Entity
-from characters.particle import Particle
 
 class Player(Entity):
     def __init__(self, name, pos, switch_player, drag_ghost, create_particle, groups, obstacle_sprite):
         path = './graphics/' + name + '/stand_front/' + 'stand_front0.png'
-        super().__init__(path, pos, PLAYER_SPEED, groups, obstacle_sprite)
+        super().__init__(path, pos, create_particle, PLAYER_SPEED, groups, obstacle_sprite)
         ##hard coded, change after
-        self.obstacle_sprite = obstacle_sprite
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
 
         #particles
-        self.create_particle = create_particle
-        self.particles = []
-        self.casting = False
-        self.casting_start = 0
         self.casting_cooldown = 400
 
         #animation
-        self.status = 'stand_front'
-        self.frame_index = 0
-        self.animate_speed = 6/FPS
-        self.import_player_assets(name)
+        self.animations = {'stand_front': [], 'stand_frontright': [], 'stand_frontleft': [], 'stand_back': [], 'stand_backright': [], 'stand_backleft': [], 'stand_right': [], 'stand_left': [],
+                           'walk_front': [], 'walk_frontright': [], 'walk_frontleft': [], 'walk_back': [], 'walk_backright': [], 'walk_backleft': [], 'walk_right': [], 'walk_left': []}
+        self.import_assets(name)
 
         self.active = False
         self.switch_player = switch_player
@@ -37,15 +29,6 @@ class Player(Entity):
         self.health = 3
         self.invencible_time = 100
         self.invencible_start = 0
-
-    def import_player_assets(self, name):
-        character_path = './graphics/' + name + '/'
-        self.animations = {'stand_front': [], 'stand_frontright': [], 'stand_frontleft': [], 'stand_back': [], 'stand_backright': [], 'stand_backleft': [], 'stand_right': [], 'stand_left': [],
-                           'walk_front': [], 'walk_frontright': [], 'walk_frontleft': [], 'walk_back': [], 'walk_backright': [], 'walk_backleft': [], 'walk_right': [], 'walk_left': []}
-
-        for animation in self.animations.keys():
-            full_path = character_path + animation
-            self.animations[animation] = import_folder(full_path)
 
     def input(self):
         if not self.casting:
