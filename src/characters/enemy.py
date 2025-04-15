@@ -37,8 +37,7 @@ class Enemy(Entity):
         player_pos = self.get_player_pos()
         player_sight = self.get_player_sight()
 
-        self.direction_perp = pygame.math.Vector2(0, 0)
-        self.direction_norm = pygame.math.Vector2(0, 0)
+        direction_perp = pygame.math.Vector2(0, 0)
 
         delta_x = self.rect.center[0] - player_pos[0]
         delta_y = self.rect.center[1] - player_pos[1]
@@ -47,29 +46,30 @@ class Enemy(Entity):
         omega = math.atan2(delta_y, delta_x)
 
         if omega < self.evasion_angle + alpha and omega >= alpha:
-            self.direction_perp.x +=  -player_sight.y
-            self.direction_perp.y += player_sight.x
+            direction_perp.x +=  -player_sight.y
+            direction_perp.y += player_sight.x
         elif omega > -self.evasion_angle + alpha and omega < alpha:
-            self.direction_perp.x +=  player_sight.y
-            self.direction_perp.y += -player_sight.x
+            direction_perp.x +=  player_sight.y
+            direction_perp.y += -player_sight.x
 
-        delta_vector = pygame.math.Vector2(self.rect.center[0] - player_pos[0],
-                                     self.rect.center[1] - player_pos[1])
-        if delta_vector.length() > 0:
-            self.direction_norm = -delta_vector.normalize()
+        if delta_x > 0:
+            self.direction.x = -1
+        elif delta_x < 0:
+            self.direction.x = 1
         else:
-            self.direction_norm = pygame.math.Vector2(0, 0)
+            self.direction.x = 0
+            
+        if delta_y > 0:
+            self.direction.y = -1
+        elif delta_y < 0:
+            self.direction.y = 1
+        else:
+            self.direction.y = 0
 
-        # Normalize the direction vectors
-        if self.direction_perp.magnitude() > 0:
-            self.direction_norm = pygame.math.Vector2(0,0)
-            self.direction_perp = self.direction_perp.normalize()
-        if self.direction_norm.magnitude() > 0:
-            self.direction_norm = self.direction_norm.normalize()
-
-        self.direction = self.direction_perp + self.direction_norm
-
-
+        if(abs(delta_y) > abs(delta_x)):
+            self.direction.x = direction_perp.x
+        else:
+            self.direction.y = direction_perp.y
 
     def animate(self):
         #TO DO

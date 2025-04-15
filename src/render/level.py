@@ -19,11 +19,6 @@ class Level:
 		self.player_attackable_sprite = pygame.sprite.Group()
 		self.enemy_attackable_sprite  = pygame.sprite.Group()
 
-		# boundary surface for debugging
-		self.line = pygame.Sprite((1, 1000))
-		self.line_surf.fill('blue')
-		self.line_surf.group = self.visible_sprites
-
 		# load the map
 		self.map = TiledMap('./layouts/teste.tmx')
 		self.tmxdata = self.map.tmxdata
