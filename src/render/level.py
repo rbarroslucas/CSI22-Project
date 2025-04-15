@@ -49,7 +49,7 @@ class Level:
 				Obstacle((x, y), tile, [self.obstacle_sprites])
 
 
-		# load the player
+		# load the player - movido para make_map
 		self.enemies.append(Enemy('diogo', (376, 288), self.get_player_pos, self.get_player_sight, [self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
 		self.player1 = Player('diogo', (288, 288), self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
 
@@ -67,10 +67,10 @@ class Level:
 		return self.player1.rect.center
 
 	def get_player_sight(self):
-		line = self.player1.sight()
-		return line
+		return self.player1.sight()
 
-	def run(self):
+	def run(self, paused):
 		# update and draw the game
-		self.visible_sprites.update()
+		if not paused:
+			self.visible_sprites.update()
 		self.visible_sprites.custom_draw(self.player1)
