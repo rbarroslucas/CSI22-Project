@@ -137,7 +137,6 @@ class Level:
 	def run(self):
 		# update and draw the game
 		self.visible_sprites.update()
-		self.visible_sprites.custom_draw(self.player1, self.light_post, self.light_surface)
+		self.visible_sprites.custom_draw(self.active_player, self.light_post, self.light_surface)
 
 		self.light_post.update(self.get_player_sight())
-		self.visible_sprites.custom_draw(self.active_player)
