@@ -191,7 +191,7 @@ class Level:
 				hearts.append("full")  # Coração cheio
 			else:
 				hearts.append("empty")  # Coração vazio
-		font = pygame.font.Font(None, 36)
+
 		for i, heart_type in enumerate(hearts):
 			x = 20 + i * (self.heart_size + self.heart_spacing)
 			y = 20
