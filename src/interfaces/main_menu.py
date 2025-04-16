@@ -33,12 +33,8 @@ class MainMenu:
              "text": "Sair", "action": "quit"}
         ]
 
-        # Logo
-        try:
-            self.logo_image = pygame.image.load("assets/images/logo.png").convert_alpha()
-            self.logo_image = pygame.transform.scale(self.logo_image, self.image_rect.size)
-        except:
-            self.logo_image = None
+        self.logo_image = pygame.image.load("graphics/logo/logo.png").convert_alpha()
+        self.logo_image = pygame.transform.scale(self.logo_image, self.image_rect.size)
 
     def draw(self):
         # Fundo
@@ -46,18 +42,7 @@ class MainMenu:
         overlay.fill(self.overlay_color)
         self.display_surface.blit(overlay, (0, 0))
 
-        # Logo
-        if self.logo_image:
-            self.display_surface.blit(self.logo_image, self.image_rect.topleft)
-        else:
-            pygame.draw.rect(self.display_surface, (100, 100, 100), self.image_rect)
-            text = self.font_medium.render("LOGO DO JOGO", True, self.text_color)
-            self.display_surface.blit(text, text.get_rect(center=self.image_rect.center))
-
-        # Título
-        title_y = self.image_rect.bottom + 30  # adiciona espaço depois da logo
-        title = self.font_large.render("BAD TRIP", True, self.text_color)
-        self.display_surface.blit(title, title.get_rect(center=(WIDTH // 2, title_y)))
+        self.display_surface.blit(self.logo_image, self.image_rect.topleft)
 
         # Botões
         mouse_pos = pygame.mouse.get_pos()
