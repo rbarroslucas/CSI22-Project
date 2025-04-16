@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="24" tileheight="24" infinite="0" nextlayerid="17" nextobjectid="32">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="24" tileheight="24" infinite="0" nextlayerid="17" nextobjectid="33">
  <tileset firstgid="1" source="../spritesheets/wall.tsx"/>
  <tileset firstgid="257" source="../spritesheets/floor.tsx"/>
  <tileset firstgid="513" source="../spritesheets/elements.tsx"/>
@@ -149,7 +149,8 @@
   <object id="24" x="601.333" y="408" width="23.3333" height="45.3333"/>
   <object id="27" name="P1" type="Spawn" x="61.6667" y="281.333" width="25.6667" height="20.6667"/>
   <object id="29" name="P2" type="Spawn" x="81.1667" y="333.667" width="25.6667" height="20.6667"/>
-  <object id="30" name="Enemy" type="Spawn" x="349.167" y="187.167" width="25.6667" height="20.6667"/>
-  <object id="31" name="Gun" type="Weapon" x="526" y="360.167" width="12.5" height="12.1667"/>
+  <object id="30" name="bafao_chefe" type="Enemy" x="349.167" y="187.167" width="25.6667" height="20.6667"/>
+  <object id="31" name="Gun" type="Weapon" x="502" y="415.667" width="12.5" height="12.1667"/>
+  <object id="32" name="bafao_shaman" type="Enemy" x="399.667" y="203.667" width="25.6667" height="20.6667"/>
  </objectgroup>
 </map>

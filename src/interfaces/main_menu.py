@@ -12,7 +12,7 @@ class MainMenu:
         # Cores
         self.overlay_color = (0, 0, 0, 200)
         self.button_color = (50, 50, 50, 200)
-        self.button_hover_color = (80, 80, 80, 200)
+        self.button_hover_color = (139, 0, 0, 200)
         self.text_color = (255, 255, 255)
 
         # Área da imagem

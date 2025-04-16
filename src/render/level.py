@@ -70,11 +70,8 @@ class Level:
 		# construct the map
 		self.make_map()
 
-		#Selects active player
-		self.active_player = self.player1
-		self.inactive_player = self.player2
-		self.player1.change_active(True)
-		self.player2.set_transparency(GHOST_ALPHA)
+		self.set_players()
+
 
 
 	def render(self, surface):
@@ -102,15 +99,15 @@ class Level:
 				elif tile_object.name == 'P2':
 					self.player2 = Player('lucas', (x, y), self.switch_player, self.drag_ghost, self.interact,
                         self.create_particle, [self.visible_sprites], self.obstacle_sprites)
-				elif tile_object.name == 'Enemy' and not self.completed:
-					self.enemies.append(Enemy('rat', (x, y), self.get_player_pos, self.get_player_sight, self.create_particle,
+			elif tile_object.type == 'Enemy' and not self.completed:
+					self.enemies.append(Enemy(tile_object.name, (x, y), self.get_player_pos, self.get_player_sight, self.create_particle,
 												[self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
 			elif tile_object.name == "Start":
 				self.leftDoor = Obstacle((x, y), tile, [self.obstacle_sprites])
 			elif tile_object.name == "End":
 				self.rightDoor = Obstacle((x, y), tile, [self.obstacle_sprites])
 			elif tile_object.name == "Gun":
-				self.weapon = Weapon("Initial_Weapon", 1, 400, (x, y), [self.visible_sprites])
+				self.weapon = MapWeapon("Initial_Weapon", 1, 400, (x, y), [self.visible_sprites])
 			else:
 				Obstacle((x, y), tile, [self.obstacle_sprites])
 
@@ -194,11 +191,8 @@ class Level:
 			if heart_type == "full":
 				surface.blit(self.heart_full, (x, y))
 			else:
-				color = (100, 100, 100)  # Cinza
-				#surface.blit(self.heart_empty, (x, y))
-			text = font.render("♥", True, color)
-			surface.blit(text, (x, y))
-	
+				surface.blit(self.heart_empty, (x, y))
+
 	
 	def nearest_door(self):
 		vec_player = pygame.Vector2(self.active_player.get_rect_center())
@@ -211,6 +205,22 @@ class Level:
 			return 1
 		else:
 			return -1			
+		
+	def set_players(self, player = 1):
+		#Selects active player
+		if player == 1:
+			self.active_player = self.player1
+			self.inactive_player = self.player2
+			self.player1.change_active(True)
+			self.player2.set_transparency(GHOST_ALPHA)
+		else:
+		
+			self.active_player = self.player2
+			self.inactive_player = self.player1
+			self.player2.change_active(True)
+			self.player1.change_active(False)
+			self.player1.set_transparency(GHOST_ALPHA)
+
 
 	def run(self, state):
 		# update and draw the game

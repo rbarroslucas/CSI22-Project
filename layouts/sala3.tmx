@@ -327,7 +327,7 @@
   <object id="29" x="528.333" y="130.334" width="44" height="119.333"/>
   <object id="30" name="P1" type="Spawn" x="636.333" y="610" width="28.3333" height="23.6667"/>
   <object id="32" name="P2" type="Spawn" x="635.5" y="652.833" width="28.3333" height="23.6667"/>
-  <object id="33" name="Enemy" type="Spawn" x="623.833" y="300.834" width="28.3333" height="23.6667"/>
+  <object id="33" name="rat" type="Enemy" x="623.833" y="300.834" width="28.3333" height="23.6667"/>
   <object id="34" name="Gun" type="Weapon" x="380.667" y="345" width="20" height="20.6667"/>
  </objectgroup>
 </map>

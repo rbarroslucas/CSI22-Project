@@ -283,7 +283,7 @@
   <object id="34" x="474" y="559" width="23.5" height="56.8333"/>
   <object id="35" name="P1" type="Spawn" x="58" y="869.333" width="36.6667" height="23.3333"/>
   <object id="37" name="P2" type="Spawn" x="56.6667" y="920.833" width="36.6667" height="23.3333"/>
-  <object id="38" name="Enemy" type="Spawn" x="442.5" y="852.5" width="33" height="24.5"/>
+  <object id="38" name="manga" type="Enemy" x="442.5" y="852.5" width="33" height="24.5"/>
   <object id="39" name="Gun" type="Weapon" x="287.333" y="729" width="20" height="20.6667"/>
  </objectgroup>
 </map>
