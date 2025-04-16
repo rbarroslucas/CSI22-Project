@@ -50,15 +50,17 @@ class Enemy(Entity):
         delta = enemy_pos - player_pos
         
         self.direction = pygame.math.Vector2(0, 0)
+        current_time = pygame.time.get_ticks()
         
         if delta.magnitude() < self.persecute_radius and not self.casting:
-            if delta.magnitude() > self.evade_radius and delta.magnitude() < self.attack_radius:
+            if delta.magnitude() < self.attack_radius and delta.magnitude()>self.evade_radius:
                 self.casting = True
                 self.casting_start = pygame.time.get_ticks()
                 direction = -delta
                 
-                if 
+                if current_time - self.sound_start > self.sound_cooldown:
                     #self.attack_sound.play()
+                    self.sound_start = current_time
                     
                 self.particles.append(self.create_particle('enemy', self.particle_path, self.rect.topleft, direction))
             direction_perp = pygame.math.Vector2(0, 0)
