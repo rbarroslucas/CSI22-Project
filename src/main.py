@@ -7,7 +7,7 @@ from interfaces.game_over import GameOverMenu
 from game_states import GameState
 
 class Game:
-	def __init__(self, levels):
+	def __init__(self):
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
 		self.surface = pygame.Surface((WIDTH, HEIGTH), pygame.SRCALPHA)
@@ -23,22 +23,25 @@ class Game:
 		self.fade_speed = 2
 
 		# soundtrack
-		#pygame.mixer.init()
-		#main_sound = pygame.mixer.Sound('./audio/main.ogg')
-		#main_sound.set_volume(0.5)
-		#main_sound.play(loops = -1)
+		pygame.mixer.init()
+		main_sound = pygame.mixer.Sound('./audio/main.ogg')
+		main_sound.set_volume(0.5)
+		main_sound.play(loops = -1)
 		#
-		#scream_sound = pygame.mixer.Sound('./audio/scream.wav')
-		#scream_sound.set.volume(0.5)
-		#scream_sound.play(loops=1)
-  
-		self.maps = levels
-		self.levels = [Level(f'./layouts/{i}.tmx') for i in self.maps]
-		self.level = self.levels[0]
+		scream_sound = pygame.mixer.Sound('./audio/scream.wav')
+		scream_sound.set_volume(0.5)
+		scream_sound.play(loops=0)
+
+		self.levels = [None]*4
+		self.current_level = 0
+		self.levels[self.current_level] = Level(f'./layouts/sala{self.current_level + 1}.tmx', False)
+		self.level = self.levels[self.current_level]
+		self.completed = [False for i in self.levels]
 
 		self.pauseMenu = PauseMenu()
 		self.mainMenu = MainMenu()
 		self.gameOverMenu = GameOverMenu()
+		
 
 	def run(self):
 		while True:
@@ -92,7 +95,25 @@ class Game:
 			elif self.state == GameState.GAME_OVER:
 				self.gameOverMenu.draw()
 			else:
-				self.level.run(self.state)
+				door = self.level.run(self.state)
+				if door >= 0:
+					self.completed[self.current_level] = True
+					next_level = self.current_level
+
+					if door == 0 and self.current_level > 0:
+						next_level -= 1
+					elif self.current_level < 3:
+						next_level += 1
+						if self.levels[next_level] is None:
+							self.levels[next_level] = Level(f'./layouts/sala{next_level+1}.tmx', False)
+
+					self.transfer_func(self.current_level, next_level)
+					self.current_level = next_level
+					self.level = self.levels[self.current_level]
+					self.fade_alpha = 255
+					self.fade_speed = 3
+
+
 				if self.state == GameState.PAUSED:
 					self.pauseMenu.draw()
 
@@ -103,10 +124,21 @@ class Game:
 			self.clock.tick(FPS)
 
 	def set_levels(self):
-		self.levels = [Level(f'./layouts/{i}.tmx') for i in self.maps]
-		self.level = self.levels[0]
+		self.levels = [None]*4
+		self.current_level = 0
+		self.levels[self.current_level] = Level(f'./layouts/sala{self.current_level+1}.tmx', False)
+		self.level = self.levels[self.current_level]
+		self.completed = [False for i in self.levels]
+
+	def transfer_func(self, current, next):
+		self.levels[next].player1.health = self.levels[current].player1.health
+		self.levels[next].player2.health = self.levels[current].player2.health
+		self.levels[next].player1.inventory = self.levels[current].player1.inventory
+		self.levels[next].player2.inventory = self.levels[current].player2.inventory
+
+		if self.levels[next].player1.check_death():
+			self.levels[next].switch_player()
 
 if __name__ == '__main__':
-	levels = ['sala1', 'sala2', 'sala3', 'sala4']
-	game = Game(levels)
+	game = Game()
 	game.run()

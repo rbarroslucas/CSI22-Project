@@ -23,3 +23,8 @@ def clamp(value, mini, maxi):
         return maxi
     else:
         return value
+    
+def blur_surface(surface, scale_factor=0.25):
+    small = pygame.transform.smoothscale(surface, (int(surface.get_width() * scale_factor),
+                                                   int(surface.get_height() * scale_factor)))
+    return pygame.transform.smoothscale(small, surface.get_size())

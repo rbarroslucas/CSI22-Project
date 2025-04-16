@@ -13,7 +13,7 @@ class Player(Entity):
         self.particle_path = './graphics/player_particle'
 
         #particles
-        self.casting_cooldown = 0
+        self.casting_cooldown = 400
 
         #animation
         self.animations = {'stand_front': [], 'stand_frontright': [], 'stand_frontleft': [], 'stand_back': [], 'stand_backright': [], 'stand_backleft': [], 'stand_right': [], 'stand_left': [],
@@ -194,3 +194,9 @@ class Player(Entity):
             self.update_particles()
             self.move(self.obstacle_sprite)
 
+    def get_active(self):
+        return self.active
+
+    
+    def set_rect(self, pos):
+        self.rect.center = pos

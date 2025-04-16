@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="45" height="45" tilewidth="24" tileheight="24" infinite="0" nextlayerid="7" nextobjectid="39">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="45" height="45" tilewidth="24" tileheight="24" infinite="0" nextlayerid="7" nextobjectid="40">
  <tileset firstgid="1" source="../spritesheets/cinza.tsx"/>
  <tileset firstgid="257" source="../spritesheets/floor.tsx"/>
  <tileset firstgid="513" source="../spritesheets/elements.tsx"/>
@@ -271,7 +271,7 @@
   <object id="21" name="Start" type="Door" x="-0.666667" y="832.917" width="21.5833" height="62.75"/>
   <object id="22" x="2" y="895" width="42" height="135"/>
   <object id="23" x="42.6667" y="1007.33" width="275.333" height="22"/>
-  <object id="24" x="315.333" y="841.333" width="86" height="189.333"/>
+  <object id="24" x="324" y="841.333" width="77.3333" height="189.333"/>
   <object id="25" x="404" y="1008" width="245.333" height="24.6667"/>
   <object id="26" x="606" y="584.333" width="45.3333" height="447.667"/>
   <object id="27" name="End" type="Door" x="630.334" y="531.167" width="19.6666" height="55.3333"/>
@@ -283,6 +283,7 @@
   <object id="34" x="474" y="559" width="23.5" height="56.8333"/>
   <object id="35" name="P1" type="Spawn" x="58" y="869.333" width="36.6667" height="23.3333"/>
   <object id="37" name="P2" type="Spawn" x="56.6667" y="920.833" width="36.6667" height="23.3333"/>
-  <object id="38" name="Enemy" type="Spawn" x="442.5" y="852.5" width="33" height="24.5"/>
+  <object id="38" name="manga" type="Enemy" x="442.5" y="852.5" width="33" height="24.5"/>
+  <object id="39" name="Gun" type="Weapon" x="287.333" y="729" width="20" height="20.6667"/>
  </objectgroup>
 </map>

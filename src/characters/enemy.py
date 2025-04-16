@@ -37,8 +37,8 @@ class Enemy(Entity):
         self.invencible_start = 0
         
         # sound
-        #self.attack_sound = pygame.mixer.Sound('./audio/' + name + '.wav')
-        #self.attack_sound.set_volume(0.6)
+        self.attack_sound = pygame.mixer.Sound('./audio/' + name + '.wav')
+        self.attack_sound.set_volume(0.6)
         self.sound_cooldown = 4000
         self.sound_start = 0
 
@@ -60,8 +60,7 @@ class Enemy(Entity):
                 
 
                 if current_time - self.sound_start > self.sound_cooldown:
-                 
-                    #self.attack_sound.play()
+                    self.attack_sound.play()
                     self.sound_start = current_time
                     
                 self.particles.append(self.create_particle('enemy', self.particle_path, self.rect.topleft, direction))
