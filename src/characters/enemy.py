@@ -58,6 +58,7 @@ class Enemy(Entity):
                 self.casting_start = pygame.time.get_ticks()
                 direction = -delta
                 
+
                 if current_time - self.sound_start > self.sound_cooldown:
                     self.attack_sound.play()
                     self.sound_start = current_time

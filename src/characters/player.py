@@ -29,9 +29,12 @@ class Player(Entity):
         self.drag_cooldown = 400
         self.drag_start = 0
 
-        self.interact = interact
+        self.interact = interact # move it from level to player
         self.interact_cooldown = 400
         self.interact_start = 0
+
+        self.item_use_cooldown = 300
+        self.item_use_start = 0
 
         self.inventory = Inventory()
 
@@ -85,6 +88,15 @@ class Player(Entity):
                     self.interact_start = current_time
                     self.interact()
 
+            if keys[pygame.K_1] or keys[pygame.K_2] or keys[pygame.K_3]:
+                if current_time - self.item_use_start > self.item_use_cooldown:
+                    self.item_use_start = current_time
+                    if keys[pygame.K_1]:
+                        self.use_item(0)
+                    elif keys[pygame.K_2]:
+                        self.use_item(1)
+                    elif keys[pygame.K_3]:
+                        self.use_item(2)
 
     def sight(self):
         direction = pygame.math.Vector2()
@@ -154,6 +166,25 @@ class Player(Entity):
 
     def check_death(self):
         return self.health <= 0
+
+    def use_item(self, index):
+        item = self.inventory.items[index]
+        if item:
+            if item.name == "Healing Potion":
+                self.health = min(self.max_health, self.health + item.buff)
+                self.inventory.items[index] = None
+            elif item.name == "Damage Potion":
+                if self.inventory.weapon:
+                    if self.inventory.weapon.damage_buff_duration == 0:
+                        self.inventory.weapon.damage_buff = item.buff
+                        self.inventory.weapon.damage_buff_duration = item.buff_duration
+                        self.inventory.items[index] = None
+            elif item.name == "Cooldown Potion":
+                if self.inventory.weapon:
+                    if self.inventory.weapon.cooldown_buff_duration == 0:
+                        self.inventory.weapon.cooldown_buff = item.buff
+                        self.inventory.weapon.cooldown_buff_duration = item.buff_duration
+                        self.inventory.items[index] = None
 
     def update(self):
         if self.active:
