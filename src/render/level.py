@@ -13,7 +13,7 @@ from game_states import GameState
 from weapons.weapon import Weapon
 
 class Level:
-	def __init__(self, map):
+	def __init__(self, map, completed):
 		# sprite group setup
 		self.visible_sprites = YSortCameraGroup()
 		self.obstacle_sprites = pygame.sprite.Group()
@@ -21,6 +21,8 @@ class Level:
 
 		self.player_attackable_sprite = pygame.sprite.Group()
 		self.enemy_attackable_sprite  = pygame.sprite.Group()
+
+		self.completed = completed
 
 		# light surfaces
 		# circle glow
@@ -100,9 +102,13 @@ class Level:
 				elif tile_object.name == 'P2':
 					self.player2 = Player('lucas', (x, y), self.switch_player, self.drag_ghost, self.interact,
                         self.create_particle, [self.visible_sprites], self.obstacle_sprites)
-				elif tile_object.name == 'Enemy':
+				elif tile_object.name == 'Enemy' and not self.completed:
 					self.enemies.append(Enemy('rat', (x, y), self.get_player_pos, self.get_player_sight, self.create_particle,
 												[self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
+			elif tile_object.name == "Start":
+				self.leftDoor = Obstacle((x, y), tile, [self.obstacle_sprites])
+			elif tile_object.name == "End":
+				self.rightDoor = Obstacle((x, y), tile, [self.obstacle_sprites])
 			else:
 				Obstacle((x, y), tile, [self.obstacle_sprites])
 
@@ -162,6 +168,12 @@ class Level:
 		item_pos = pygame.math.Vector2(self.weapon.rect.centerx, self.weapon.rect.centery)
 		distance = player_pos.distance_to(item_pos)
 		return distance <= max_distance
+	
+	def enemies_killed(self):
+		for i in range(len(self.enemies)):
+			if self.enemies[i].health > 0:
+				return False
+		return True
 
 	def interact(self): # Por enquanto, fixo para 1 arma
 		if self.is_near(100):
@@ -188,6 +200,19 @@ class Level:
 				#surface.blit(self.heart_empty, (x, y))
 			text = font.render("♥", True, color)
 			surface.blit(text, (x, y))
+	
+	
+	def nearest_door(self):
+		vec_player = pygame.Vector2(self.active_player.get_rect_center())
+		vec_left = pygame.Vector2(self.leftDoor.rect.center)
+		vec_right = pygame.Vector2(self.rightDoor.rect.center)
+
+		if vec_player.distance_to(vec_left) < SCALE_FACTOR*TILESIZE/2:
+			return 0
+		elif vec_player.distance_to(vec_right) < SCALE_FACTOR*TILESIZE/2:
+			return 1
+		else:
+			return -1			
 
 	def run(self, state):
 		# update and draw the game
@@ -199,3 +224,7 @@ class Level:
 		self.active_player.inventory.draw(pygame.display.get_surface())
 		self.draw_hearts(pygame.display.get_surface())
 		self.light_post.update(self.get_player_sight())
+		if self.enemies_killed():
+			return self.nearest_door()	
+		else:
+			return -1

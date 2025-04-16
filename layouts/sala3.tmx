@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="45" height="45" tilewidth="24" tileheight="24" infinite="0" nextlayerid="8" nextobjectid="34">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="45" height="45" tilewidth="24" tileheight="24" infinite="0" nextlayerid="8" nextobjectid="35">
  <tileset firstgid="1" source="../spritesheets/cinza.tsx"/>
  <tileset firstgid="257" source="../spritesheets/elements.tsx"/>
  <tileset firstgid="513" source="../spritesheets/wall.tsx"/>
@@ -322,11 +322,12 @@
   <object id="23" x="533.333" y="579.333" width="15.3333" height="38"/>
   <object id="24" x="532.667" y="626.667" width="16" height="42"/>
   <object id="25" x="558" y="604" width="14" height="38.6667"/>
-  <object id="26" x="362" y="554.667" width="19.75" height="84.6667"/>
-  <object id="27" x="409.333" y="554" width="23.3333" height="84"/>
+  <object id="26" x="362" y="554.667" width="16.4167" height="84.6667"/>
+  <object id="27" x="418" y="554" width="14.6666" height="84"/>
   <object id="29" x="528.333" y="130.334" width="44" height="119.333"/>
   <object id="30" name="P1" type="Spawn" x="636.333" y="610" width="28.3333" height="23.6667"/>
   <object id="32" name="P2" type="Spawn" x="635.5" y="652.833" width="28.3333" height="23.6667"/>
-  <object id="33" name="Enemy" type="Spawn" x="594.5" y="300.167" width="28.3333" height="23.6667"/>
+  <object id="33" name="Enemy" type="Spawn" x="623.833" y="300.834" width="28.3333" height="23.6667"/>
+  <object id="34" name="Gun" type="Weapon" x="380.667" y="345" width="20" height="20.6667"/>
  </objectgroup>
 </map>

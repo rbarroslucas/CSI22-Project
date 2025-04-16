@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="24" tileheight="24" infinite="0" nextlayerid="11" nextobjectid="53">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="24" tileheight="24" infinite="0" nextlayerid="11" nextobjectid="56">
  <tileset firstgid="1" source="../spritesheets/classroom.tsx"/>
  <tileset firstgid="257" source="../spritesheets/cinza.tsx"/>
  <tileset firstgid="513" source="../spritesheets/elements.tsx"/>
@@ -183,5 +183,6 @@
   <object id="50" x="43.3333" y="37.3333" width="605.333" height="70.5"/>
   <object id="51" name="P2" type="Spawn" x="72" y="321" width="17.3333" height="15.3333"/>
   <object id="52" name="Enemy" type="Spawn" x="578" y="273.667" width="17.3333" height="15.3333"/>
+  <object id="53" name="Gun" type="Weapon" x="337.333" y="272" width="20" height="20.6667"/>
  </objectgroup>
 </map>

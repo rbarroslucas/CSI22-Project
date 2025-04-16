@@ -28,8 +28,10 @@ class Game:
 		#main_sound.set_volume(0.5)
 		#main_sound.play(loops = -1)
 		self.maps = levels
-		self.levels = [Level(f'./layouts/{i}.tmx') for i in self.maps]
-		self.level = self.levels[0]
+		self.levels = [Level(f'./layouts/{i}.tmx', False) for i in self.maps]
+		self.current_level = 0
+		self.level = self.levels[self.current_level]
+		self.completed = [False for i in self.levels]
 
 		self.pauseMenu = PauseMenu()
 		self.mainMenu = MainMenu()
@@ -87,7 +89,17 @@ class Game:
 			elif self.state == GameState.GAME_OVER:
 				self.gameOverMenu.draw()
 			else:
-				self.level.run(self.state)
+				door = self.level.run(self.state)
+				if door >= 0:
+					self.completed[self.current_level]
+					if door == 0 and self.current_level > 0:
+						self.current_level -= 1
+					elif self.current_level < 3:
+						self.current_level += 1
+					self.level = self.levels[self.current_level]
+					self.fade_alpha = 255
+					self.fade_speed = 3
+
 				if self.state == GameState.PAUSED:
 					self.pauseMenu.draw()
 
@@ -98,8 +110,10 @@ class Game:
 			self.clock.tick(FPS)
 
 	def set_levels(self):
-		self.levels = [Level(f'./layouts/{i}.tmx') for i in self.maps]
-		self.level = self.levels[0]
+		self.levels = [Level(f'./layouts/{i}.tmx', False) for i in self.maps]
+		self.current_level = 0
+		self.level = self.levels[self.current_level]
+		self.completed = [False for i in self.completed]
 
 if __name__ == '__main__':
 	levels = ['sala1', 'sala2', 'sala3', 'sala4']
