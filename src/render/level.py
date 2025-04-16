@@ -101,7 +101,7 @@ class Level:
 					self.player2 = Player('lucas', (x, y), self.switch_player, self.drag_ghost, self.interact,
                         self.create_particle, [self.visible_sprites], self.obstacle_sprites)
 				elif tile_object.name == 'Enemy':
-					self.enemies.append(Enemy('rat', (x, y), self.get_player_pos, self.get_player_sight, self.create_particle,
+					self.enemies.append(Enemy('bafao_shaman', (x, y), self.get_player_pos, self.get_player_sight, self.create_particle,
 												[self.visible_sprites, self.player_attackable_sprite], self.obstacle_sprites))
 			else:
 				Obstacle((x, y), tile, [self.obstacle_sprites])

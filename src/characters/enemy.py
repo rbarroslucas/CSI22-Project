@@ -37,8 +37,10 @@ class Enemy(Entity):
         self.invencible_start = 0
         
         # sound
-        self.death_sound = pygame.mixer.Sound('./audio/' + name + '.wav')
-        self.death_sound.set_volume(0.6)
+        #self.attack_sound = pygame.mixer.Sound('./audio/' + name + '.wav')
+        #self.attack_sound.set_volume(0.6)
+        self.sound_cooldown = 4000
+        self.sound_start = 0
 
     def action(self):
         player_pos = self.get_player_pos()
@@ -54,6 +56,9 @@ class Enemy(Entity):
                 self.casting = True
                 self.casting_start = pygame.time.get_ticks()
                 direction = -delta
+                
+                if 
+                    #self.attack_sound.play()
                     
                 self.particles.append(self.create_particle('enemy', self.particle_path, self.rect.topleft, direction))
             direction_perp = pygame.math.Vector2(0, 0)
@@ -120,7 +125,6 @@ class Enemy(Entity):
             self.invencible_start = current_time
 
             if self.health <= 0:
-                self.death_sound.play()
                 self.kill()
                 
     def update(self):
