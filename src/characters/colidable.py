@@ -26,8 +26,8 @@ class Colidable(pygame.sprite.Sprite, ABC):
         delta_y = self.direction.y * self.speed
         self.hitbox.y += delta_y
         self.check_collision('vertical', group)
-
-        self.rect.center = self.hitbox.center
+        
+        self.rect.midbottom = self.hitbox.midbottom
 
     def check_collision(self, direction, group):
         if direction == 'horizontal':

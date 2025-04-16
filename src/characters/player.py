@@ -66,7 +66,7 @@ class Player(Entity):
                     self.casting_start = pygame.time.get_ticks()
                     direction = self.sight()
 
-                    self.particles.append(self.create_particle('player', self.particle_path, self.rect.topleft, direction))
+                    self.particles.append(self.create_particle('player', self.particle_path, self.rect.center, direction))
 
             current_time = pygame.time.get_ticks()
 

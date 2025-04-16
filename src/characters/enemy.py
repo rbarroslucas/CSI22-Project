@@ -50,7 +50,7 @@ class Enemy(Entity):
                 self.casting_start = pygame.time.get_ticks()
                 direction = -delta
                     
-                self.particles.append(self.create_particle('enemy', self.particle_path, self.rect.topleft, direction))
+                self.particles.append(self.create_particle('enemy', self.particle_path, self.rect.center, direction))
             direction_perp = pygame.math.Vector2(0, 0)
 
             alpha = math.atan2(player_sight.y, player_sight.x)

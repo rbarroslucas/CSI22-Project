@@ -116,7 +116,7 @@ class Level:
 		if caller == 'player':
 			return Particle(path, pos, direction, self.active_player.inventory.weapon.damage, [self.visible_sprites], self.player_attackable_sprite)
 		elif caller == 'enemy':
-			return Particle(path, pos, direction, 1, [self.visible_sprites], self.enemy_attackable_sprite)
+			return Particle(path, pos, direction, 0, [self.visible_sprites], self.enemy_attackable_sprite)
 
 	def get_player_pos(self):
 		rect = self.active_player.get_rect_center()
