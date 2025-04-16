@@ -8,7 +8,7 @@ class Player(Entity):
         path = './graphics/' + name + '/stand_front/' + 'stand_front0.png'
         super().__init__(path, pos, create_particle, PLAYER_SPEED, groups, obstacle_sprite)
         ##hard coded, change after
-        self.hitbox = self.rect.inflate(-self.rect.width//2, -self.rect.height//2)
+        self.hitbox = self.rect.inflate(-self.rect.width//1.5, -self.rect.height//1.5)
         self.hitbox = self.hitbox.move(0, self.rect.height//4)
         self.particle_path = './graphics/player_particle'
 
@@ -66,7 +66,7 @@ class Player(Entity):
                     self.casting_start = pygame.time.get_ticks()
                     direction = self.sight()
 
-                    self.particles.append(self.create_particle('player', self.particle_path, self.rect.topleft, direction))
+                    self.particles.append(self.create_particle('player', self.particle_path, self.rect.center, direction))
 
             current_time = pygame.time.get_ticks()
 

@@ -7,13 +7,14 @@ from characters.entity import Entity
 class Enemy(Entity):
     def __init__(self, name, pos, get_player_pos, get_player_sight, create_particle, groups, obstacle_sprite):
         path = './graphics/' + name + '/stand_front/' + 'stand_front0.png'
-        super().__init__(path, pos, create_particle, ENEMY_SPEED, groups, obstacle_sprite)
+        enemy_settings = ENEMY_SETTINGS[name]
+        super().__init__(path, pos, create_particle, enemy_settings["speed"], groups, obstacle_sprite)
         ##hard coded, change after
         self.hitbox = self.rect.inflate(0, -self.rect.height // 2)
         self.particle_path = './graphics/' + name + '/particle'
         
         #particles
-        self.casting_cooldown = 800
+        self.casting_cooldown = enemy_settings["casting_cooldown"]
         
         #animation
         self.animations = {'stand_front': [], 'stand_back': [], 'stand_right': [], 'stand_left': [],
@@ -21,9 +22,9 @@ class Enemy(Entity):
         self.import_assets(name)
 
         #radius
-        self.attack_radius = 5*TILESIZE
-        self.persecute_radius = 7*TILESIZE
-        self.evade_radius = 2*TILESIZE        
+        self.attack_radius = enemy_settings["attack_radius"]*TILESIZE
+        self.persecute_radius = enemy_settings["persecute_radius"]*TILESIZE
+        self.evade_radius = enemy_settings["evade_radius"]*TILESIZE        
         
         # ai stuff
         self.evasion_angle = math.pi/6
@@ -31,7 +32,7 @@ class Enemy(Entity):
         self.get_player_pos = get_player_pos
         self.get_player_sight = get_player_sight
         
-        self.health = 3
+        self.health = enemy_settings["health"]
         self.invencible_time = 100
         self.invencible_start = 0
 

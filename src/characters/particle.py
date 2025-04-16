@@ -15,6 +15,7 @@ class Particle(Colidable):
         self.frame_index = 0
         self.animate_speed = 6/FPS
         self.animation = import_folder(path)
+        self.hitbox = self.rect.inflate(-self.rect.width//2, -self.rect.height//2)
         
     def collision(self, direction, sprite):
         sprite.get_damaged(self.damage)
