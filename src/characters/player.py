@@ -169,21 +169,22 @@ class Player(Entity):
 
     def use_item(self, index):
         item = self.inventory.items[index]
-        if item.name == "Healing Potion":
-            self.health = min(self.max_health, self.health + item.buff)
-            self.inventory.items[index] = None
-        elif item.name == "Damage Potion":
-            if self.inventory.weapon:
-                if self.inventory.weapon.damage_buff_duration == 0:
-                    self.inventory.weapon.damage_buff = item.buff
-                    self.inventory.weapon.damage_buff_duration = item.buff_duration
-                    self.inventory.items[index] = None
-        elif item.name == "Cooldown Potion":
-            if self.inventory.weapon:
-                if self.inventory.weapon.cooldown_buff_duration == 0:
-                    self.inventory.weapon.cooldown_buff = item.buff
-                    self.inventory.weapon.cooldown_buff_duration = item.buff_duration
-                    self.inventory.items[index] = None
+        if item:
+            if item.name == "Healing Potion":
+                self.health = min(self.max_health, self.health + item.buff)
+                self.inventory.items[index] = None
+            elif item.name == "Damage Potion":
+                if self.inventory.weapon:
+                    if self.inventory.weapon.damage_buff_duration == 0:
+                        self.inventory.weapon.damage_buff = item.buff
+                        self.inventory.weapon.damage_buff_duration = item.buff_duration
+                        self.inventory.items[index] = None
+            elif item.name == "Cooldown Potion":
+                if self.inventory.weapon:
+                    if self.inventory.weapon.cooldown_buff_duration == 0:
+                        self.inventory.weapon.cooldown_buff = item.buff
+                        self.inventory.weapon.cooldown_buff_duration = item.buff_duration
+                        self.inventory.items[index] = None
 
     def update(self):
         if self.active:
