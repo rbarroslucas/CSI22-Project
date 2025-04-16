@@ -1,7 +1,10 @@
-# CSI22 Project
+# 🎮 CSI22 Project – *Bad Trip*
 
-This repo contains our project developed as part of the first module of CSI-22. This 2D game captures the feeling of our nightmarish return to university once again. You play as two characters, trapped in a nightmare. Your mission is to escape by clearing a series of rooms—each with increasing difficulty, hidden weapons, and multiple enemies. 
+This repository contains our project developed as part of the first module of **CSI-22**.  
+This 2D game captures the feeling of our **nightmarish return to university** once again.
 
+You play as **two characters**, trapped in a nightmare. Your mission is to **escape** by clearing a series of rooms—each with increasing difficulty, hidden weapons, and multiple enemies.
+---
 Team:
 
  Diogo Bueno Rodrigues
@@ -13,27 +16,6 @@ Team:
  Luiz Felipe de Brito Ramos
  
  Thiago Galante Pereira
-
- #### How to run:
- In order to play the game, first thing needed is to create a environmet with the requirements, which can be found in the repo as well.
- Using conda:
-```cpp
-conda create -n env python=3.12
-conda activate env
-conda install pip
-pip install pygame pytmx
-python .\src\main.py
-```
-
- Uing venv
-
- # 🎮 CSI22 Project – *Bad Trip*
-
-This repository contains our project developed as part of the first module of **CSI-22**.  
-This 2D game captures the feeling of our **nightmarish return to university** once again.
-
-You play as **two characters**, trapped in a nightmare. Your mission is to **escape** by clearing a series of rooms—each with increasing difficulty, hidden weapons, and multiple enemies.
-
 ---
 
 ## 🧠 Game Concept
