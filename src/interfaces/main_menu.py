@@ -26,7 +26,7 @@ class MainMenu:
 
         self.buttons = [
             {"rect": pygame.Rect(center_x, button_start_y, button_width, button_height),
-             "text": "Novo Jogo", "action": "new_game"},
+             "text": "Começar Jogo", "action": "new_game"},
             {"rect": pygame.Rect(center_x, button_start_y + button_spacing, button_width, button_height),
              "text": "Sair", "action": "quit"}
         ]
