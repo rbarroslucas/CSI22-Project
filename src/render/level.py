@@ -117,7 +117,24 @@ class Level:
 
 	def create_particle(self, caller, path, pos, direction):
 		if caller == 'player':
-			return Particle(path, pos, direction, self.active_player.inventory.weapon.damage, [self.visible_sprites], self.player_attackable_sprite)
+
+			# cooldown buff handler
+			if self.active_player.inventory.weapon.cooldown_buff_duration == 0:
+				self.active_player.casting_cooldown = self.active_player.inventory.weapon.cooldown
+				self.active_player.inventory.weapon.cooldown_buff = 0
+			else:
+				self.active_player.casting_cooldown = self.active_player.inventory.weapon.cooldown - self.active_player.inventory.weapon.cooldown_buff
+				self.active_player.inventory.weapon.cooldown_buff_duration -= 1
+
+			# damage buff handler
+			if self.active_player.inventory.weapon.damage_buff_duration == 0:
+				damage = self.active_player.inventory.weapon.damage
+				self.active_player.inventory.weapon.damage_buff = 0
+			else:
+				damage = self.active_player.inventory.weapon.damage + self.active_player.inventory.weapon.damage_buff
+				self.active_player.inventory.weapon.damage_buff_duration -= 1
+
+			return Particle(path, pos, direction, damage, [self.visible_sprites], self.player_attackable_sprite)
 		elif caller == 'enemy':
 			return Particle(path, pos, direction, 1, [self.visible_sprites], self.enemy_attackable_sprite)
 
@@ -174,7 +191,7 @@ class Level:
 				hearts.append("full")  # Coração cheio
 			else:
 				hearts.append("empty")  # Coração vazio
-		font = pygame.font.Font(None, 36)
+
 		for i, heart_type in enumerate(hearts):
 			x = 20 + i * (self.heart_size + self.heart_spacing)
 			y = 20
