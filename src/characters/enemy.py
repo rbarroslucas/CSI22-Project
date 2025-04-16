@@ -57,7 +57,7 @@ class Enemy(Entity):
                 self.casting_start = pygame.time.get_ticks()
                 direction = -delta
                 
-                if 
+               # if
                     #self.attack_sound.play()
                     
                 self.particles.append(self.create_particle('enemy', self.particle_path, self.rect.topleft, direction))
