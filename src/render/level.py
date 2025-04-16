@@ -10,7 +10,7 @@ from characters.player import Player
 from characters.enemy import Enemy
 from characters.particle import Particle
 from game_states import GameState
-from weapons.weapon import Weapon
+from weapons.map_weapon import MapWeapon
 
 class Level:
 	def __init__(self, map):
@@ -43,8 +43,8 @@ class Level:
 		self.ghost_light.rect = self.ghost_glow.get_rect(topleft=(0,0))
 
 		# player hearts
-		#self.heart_full = pygame.image.load("assets/hearts/full_heart.png").convert_alpha()
-		#self.heart_empty = pygame.image.load("assets/hearts/empty_heart.png").convert_alpha()
+		self.heart_full = pygame.image.load("graphics/coracao/full_heart.png").convert_alpha()
+		self.heart_empty = pygame.image.load("graphics/coracao/empty_heart.png").convert_alpha()
 		self.heart_size = 32
 		self.heart_spacing = 10
 
@@ -106,9 +106,8 @@ class Level:
 			else:
 				Obstacle((x, y), tile, [self.obstacle_sprites])
 
-
 		# load dropped weapons
-		self.weapon = Weapon("Initial_Weapon", 1, 400, (500, 400), [self.visible_sprites])
+		self.weapon = MapWeapon("Initial_Weapon", 1, 400, (500, 400), [self.visible_sprites])
 
 	def make_map(self):
 		floor_surf = pygame.Surface((self.map.width * SCALE_FACTOR,
@@ -165,7 +164,7 @@ class Level:
 
 	def interact(self): # Por enquanto, fixo para 1 arma
 		if self.is_near(100):
-			self.active_player.inventory.weapon = self.weapon
+			self.active_player.inventory.change_weapon(self.weapon)
 			self.active_player.casting_cooldown = self.weapon.cooldown
 
 	def draw_hearts(self, surface):
@@ -181,13 +180,9 @@ class Level:
 			y = 20
 
 			if heart_type == "full":
-				#surface.blit(self.heart_full, (x, y))
-				color = (255, 0, 0)  # Vermelho
+				surface.blit(self.heart_full, (x, y))
 			else:
-				color = (100, 100, 100)  # Cinza
-				#surface.blit(self.heart_empty, (x, y))
-			text = font.render("♥", True, color)
-			surface.blit(text, (x, y))
+				surface.blit(self.heart_empty, (x, y))
 
 	def run(self, state):
 		# update and draw the game
