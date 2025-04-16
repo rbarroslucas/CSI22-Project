@@ -35,6 +35,10 @@ class Enemy(Entity):
         self.health = enemy_settings["health"]
         self.invencible_time = 100
         self.invencible_start = 0
+        
+        # sound
+        self.death_sound = pygame.mixer.Sound('./audio/' + name + '.wav')
+        self.death_sound.set_volume(0.6)
 
     def action(self):
         player_pos = self.get_player_pos()
@@ -116,6 +120,7 @@ class Enemy(Entity):
             self.invencible_start = current_time
 
             if self.health <= 0:
+                self.death_sound.play()
                 self.kill()
                 
     def update(self):
