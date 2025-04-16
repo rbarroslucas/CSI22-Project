@@ -109,12 +109,11 @@ class Level:
 				self.leftDoor = Obstacle((x, y), tile, [self.obstacle_sprites])
 			elif tile_object.name == "End":
 				self.rightDoor = Obstacle((x, y), tile, [self.obstacle_sprites])
+			elif tile_object.name == "Gun":
+				self.weapon = Weapon("Initial_Weapon", 1, 400, (x, y), [self.visible_sprites])
 			else:
 				Obstacle((x, y), tile, [self.obstacle_sprites])
 
-
-		# load dropped weapons
-		self.weapon = Weapon("Initial_Weapon", 1, 400, (500, 400), [self.visible_sprites])
 
 	def make_map(self):
 		floor_surf = pygame.Surface((self.map.width * SCALE_FACTOR,

@@ -7,7 +7,7 @@ from interfaces.game_over import GameOverMenu
 from game_states import GameState
 
 class Game:
-	def __init__(self, levels):
+	def __init__(self):
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
 		self.surface = pygame.Surface((WIDTH, HEIGTH), pygame.SRCALPHA)
@@ -27,9 +27,10 @@ class Game:
 		#main_sound = pygame.mixer.Sound('./audio/main.ogg')
 		#main_sound.set_volume(0.5)
 		#main_sound.play(loops = -1)
-		self.maps = levels
-		self.levels = [Level(f'./layouts/{i}.tmx', False) for i in self.maps]
+
+		self.levels = [None]*4
 		self.current_level = 0
+		self.levels[self.current_level] = Level(f'./layouts/sala{self.current_level + 1}.tmx', False)
 		self.level = self.levels[self.current_level]
 		self.completed = [False for i in self.levels]
 
@@ -91,11 +92,14 @@ class Game:
 			else:
 				door = self.level.run(self.state)
 				if door >= 0:
-					self.completed[self.current_level]
+					self.completed[self.current_level] = True
 					if door == 0 and self.current_level > 0:
 						self.current_level -= 1
 					elif self.current_level < 3:
 						self.current_level += 1
+						if self.levels[self.current_level] is None:
+							self.levels[self.current_level] = Level(f'./layouts/sala{self.current_level+1}.tmx', False)
+
 					self.level = self.levels[self.current_level]
 					self.fade_alpha = 255
 					self.fade_speed = 3
@@ -110,12 +114,14 @@ class Game:
 			self.clock.tick(FPS)
 
 	def set_levels(self):
-		self.levels = [Level(f'./layouts/{i}.tmx', False) for i in self.maps]
+		self.levels = [None]*4
 		self.current_level = 0
+		self.levels[self.current_level] = Level(f'./layouts/sala{self.current_level+1}.tmx', False)
 		self.level = self.levels[self.current_level]
-		self.completed = [False for i in self.completed]
+		self.completed = [False for i in self.levels]
+	
+		
 
 if __name__ == '__main__':
-	levels = ['sala1', 'sala2', 'sala3', 'sala4']
-	game = Game(levels)
+	game = Game()
 	game.run()
