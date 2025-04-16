@@ -3,10 +3,15 @@
 This repo contains our project developed as part of the first module of CSI-22. This 2D game captures the feeling of our nightmarish return to university once again. You play as two characters, trapped in a nightmare. Your mission is to escape by clearing a series of rooms—each with increasing difficulty, hidden weapons, and multiple enemies. 
 
 Team:
+
  Diogo Bueno Rodrigues
+ 
  Daniel da Silveira Sahadi
+ 
  Lucas Ribeiro do Rêgo Barros
+ 
  Luiz Felipe de Brito Ramos
+ 
  Thiago Galante Pereira
 
  #### How to run:
