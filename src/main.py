@@ -23,14 +23,14 @@ class Game:
 		self.fade_speed = 2
 
 		# soundtrack
-		pygame.mixer.init()
-		main_sound = pygame.mixer.Sound('./audio/main.ogg')
-		main_sound.set_volume(0.5)
-		main_sound.play(loops = -1)
-  
-		scream_sound = pygame.mixer.Sound('./audio/scream.wav')
-		scream_sound.set.volume(0.5)
-		scream_sound.play(loops=1)
+		#pygame.mixer.init()
+		#main_sound = pygame.mixer.Sound('./audio/main.ogg')
+		#main_sound.set_volume(0.5)
+		#main_sound.play(loops = -1)
+		#
+		#scream_sound = pygame.mixer.Sound('./audio/scream.wav')
+		#scream_sound.set.volume(0.5)
+		#scream_sound.play(loops=1)
   
 		self.maps = levels
 		self.levels = [Level(f'./layouts/{i}.tmx') for i in self.maps]
