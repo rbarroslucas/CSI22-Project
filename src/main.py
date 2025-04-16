@@ -15,7 +15,13 @@ class Game:
 		self.clock = pygame.time.Clock()
 
 		self.state = GameState.MAIN_MENU
-  
+
+		self.fade_img = pygame.Surface((WIDTH, HEIGTH)).convert_alpha()
+		self.fade_img.fill((139, 0, 0))
+		self.fade = self.fade_img.get_rect()
+		self.fade_alpha = 255
+		self.fade_speed = 2
+
 		# soundtrack
 		#pygame.mixer.init()
 		#main_sound = pygame.mixer.Sound('./audio/main.ogg')
@@ -47,6 +53,8 @@ class Game:
 					action = self.mainMenu.handle_event(event)
 					if action == "new_game":
 						self.state = GameState.PLAYING
+						self.fade_alpha = 255
+						self.fade_speed = 3
 						self.set_levels()
 					elif action == "quit":
 						pygame.quit()
@@ -83,6 +91,9 @@ class Game:
 				if self.state == GameState.PAUSED:
 					self.pauseMenu.draw()
 
+			self.fade_img.set_alpha(self.fade_alpha)
+			self.screen.blit(self.fade_img, self.fade)
+			self.fade_alpha -= self.fade_speed
 			pygame.display.update()
 			self.clock.tick(FPS)
 
@@ -91,6 +102,6 @@ class Game:
 		self.level = self.levels[0]
 
 if __name__ == '__main__':
-	levels = ['sala1', 'sala2']
+	levels = ['sala1', 'sala2', 'sala3', 'sala4']
 	game = Game(levels)
 	game.run()
