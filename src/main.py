@@ -21,8 +21,8 @@ class Game:
 		#main_sound = pygame.mixer.Sound('./audio/main.ogg')
 		#main_sound.set_volume(0.5)
 		#main_sound.play(loops = -1)
-
-		self.levels = [Level(f'./layouts/{i}.tmx') for i in levels]
+		self.maps = levels
+		self.levels = [Level(f'./layouts/{i}.tmx') for i in self.maps]
 		self.level = self.levels[0]
 
 		self.pauseMenu = PauseMenu()
@@ -47,7 +47,7 @@ class Game:
 					action = self.mainMenu.handle_event(event)
 					if action == "new_game":
 						self.state = GameState.PLAYING
-						self.level = Level()
+						self.set_levels()
 					elif action == "quit":
 						pygame.quit()
 						sys.exit()
@@ -63,17 +63,17 @@ class Game:
 					action = self.gameOverMenu.handle_event(event)
 					if action == "retry":
 						self.state = GameState.PLAYING
-						self.level = Level()
+						self.set_levels()
+
 					elif action == "main_menu":
 						self.state = GameState.MAIN_MENU
-						self.level = Level()
+						self.set_levels()
 
 			# Draw
 			self.screen.fill('black')
 
 			if self.level.is_game_over():
 				self.state = GameState.GAME_OVER
-
 			if self.state == GameState.MAIN_MENU:
 				self.mainMenu.draw()
 			elif self.state == GameState.GAME_OVER:
@@ -86,7 +86,11 @@ class Game:
 			pygame.display.update()
 			self.clock.tick(FPS)
 
+	def set_levels(self):
+		self.levels = [Level(f'./layouts/{i}.tmx') for i in self.maps]
+		self.level = self.levels[0]
+
 if __name__ == '__main__':
-	levels = ['sala1', 'sala2', 'sala3', 'sala4']
+	levels = ['sala1', 'sala2']
 	game = Game(levels)
 	game.run()

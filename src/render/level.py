@@ -95,10 +95,10 @@ class Level:
 
 			if tile_object.type == 'Spawn':
 				if tile_object.name == 'P1':
-					self.player1 = Player('diogo', (x, y), self.switch_player, self.drag_ghost,
+					self.player1 = Player('diogo', (x, y), self.switch_player, self.drag_ghost, self.interact,
                         self.create_particle, [self.visible_sprites, self.enemy_attackable_sprite], self.obstacle_sprites)
 				elif tile_object.name == 'P2':
-					self.player2 = Player('lucas', (x, y), self.switch_player, self.drag_ghost,
+					self.player2 = Player('lucas', (x, y), self.switch_player, self.drag_ghost, self.interact,
                         self.create_particle, [self.visible_sprites], self.obstacle_sprites)
 				elif tile_object.name == 'Enemy':
 					self.enemies.append(Enemy('manga', (x, y), self.get_player_pos, self.get_player_sight, self.create_particle,
