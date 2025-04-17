@@ -1,9 +1,7 @@
 import pygame, sys
 from settings import *
-from render.level import Level
-from interfaces.pause_menu import PauseMenu
-from interfaces.main_menu import MainMenu
-from interfaces.game_over import GameOverMenu
+from render import Level
+from interfaces import PauseMenu, MainMenu, GameOverMenu
 from game_states import GameState
 
 class Game:

@@ -1,16 +1,13 @@
 import pygame
 import math
 from settings import *
-from map.tiledmap import TiledMap
-from map.obstacle import Obstacle
+from map import TiledMap, Obstacle
 from render.support import import_csv_layout
 from render.camera import YSortCameraGroup
 from render.flashlight import *
-from characters.player import Player
-from characters.enemy import Enemy
-from characters.particle import Particle
+from characters import Player, Enemy, Particle
 from game_states import GameState
-from weapons.map_weapon import MapWeapon
+from weapons import MapWeapon
 
 class Level:
 	"""
@@ -383,10 +380,10 @@ class Level:
 	def run(self, state):
 		"""
     	Atualiza o estado do jogo e renderiza os elementos visuais na tela.
-	
+
     	Args:
     	    state (GameState): Estado atual do jogo (ex: GameState.PLAYING).
-	
+
     	Returns:
     	    int: 0 ou 1 se porta estiver acessível (nível completo), -1 caso contrário.
     	"""

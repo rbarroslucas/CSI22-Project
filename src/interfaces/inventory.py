@@ -1,7 +1,6 @@
 import pygame
-from weapons.inventory_weapon import InventoryWeapon
-from items.potion import Potion
-from items.durantion_potion import DurationPotion
+from weapons import InventoryWeapon
+from items import Potion, DurationPotion
 import random
 
 
