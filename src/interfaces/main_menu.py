@@ -1,10 +1,38 @@
-# interfaces/main_menu.py
 import pygame
 from settings import WIDTH, HEIGTH
 
-
 class MainMenu:
+    """
+    Classe que representa o menu principal do jogo. O menu exibe uma logo e botões de navegação,
+    permitindo que o jogador inicie um novo jogo ou saia.
+
+    Atributos:
+        display_surface (pygame.Surface): Superfície onde os elementos gráficos serão desenhados.
+        font_large (pygame.font.Font): Fonte usada para o título e outros textos grandes.
+        font_medium (pygame.font.Font): Fonte usada para os textos dos botões.
+        overlay_color (tuple): Cor do overlay semi-transparente que cobre o fundo do menu.
+        button_color (tuple): Cor dos botões no estado normal.
+        button_hover_color (tuple): Cor dos botões quando o mouse está sobre eles.
+        text_color (tuple): Cor do texto dos botões.
+        image_rect (pygame.Rect): Área onde a logo do jogo será exibida.
+        buttons (list): Lista de botões do menu, cada um com sua posição, texto e ação associada.
+        logo_image (pygame.Surface): Imagem da logo do jogo, redimensionada para o tamanho apropriado.
+
+    Métodos:
+        __init__: Inicializa o menu, carregando a logo e configurando os botões e suas ações.
+        draw: Desenha o menu na superfície de exibição, incluindo a logo e os botões.
+        handle_event: Processa eventos de clique do mouse e retorna a ação correspondente ao botão pressionado.
+
+    Ações:
+        new_game (str): Ação de iniciar um novo jogo.
+        quit (str): Ação de sair do jogo.
+    """
+
     def __init__(self):
+        """
+        Inicializa o menu principal, configurando os botões, a logo e o overlay de fundo.
+        Carrega a imagem da logo e define os parâmetros necessários para o layout dos botões.
+        """
         self.display_surface = pygame.display.get_surface()
         self.font_large = pygame.font.Font(None, 72)
         self.font_medium = pygame.font.Font(None, 48)
@@ -35,6 +63,11 @@ class MainMenu:
         self.logo_image = pygame.transform.scale(self.logo_image, self.image_rect.size)
 
     def draw(self):
+        """
+        Desenha o menu na superfície de exibição, incluindo o overlay de fundo, a logo do jogo
+        e os botões de navegação. Os botões mudam de cor quando o mouse passa sobre eles.
+
+        """
         # Fundo
         overlay = pygame.Surface((WIDTH, HEIGTH), pygame.SRCALPHA)
         overlay.fill(self.overlay_color)
@@ -56,7 +89,15 @@ class MainMenu:
             self.display_surface.blit(text, text.get_rect(center=button["rect"].center))
 
     def handle_event(self, event):
-        """Processa eventos e retorna a ação correspondente"""
+        """
+        Processa eventos de clique do mouse e retorna a ação correspondente ao botão pressionado.
+
+        Args:
+            event (pygame.event.Event): O evento a ser processado.
+
+        Retorna:
+            str or None: A ação associada ao botão pressionado (ex. "new_game", "quit") ou None se nenhum botão for pressionado.
+        """
         if event.type == pygame.MOUSEBUTTONDOWN:
             for button in self.buttons:
                 if button["rect"].collidepoint(event.pos):

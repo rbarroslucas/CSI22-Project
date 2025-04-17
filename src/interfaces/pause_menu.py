@@ -1,10 +1,32 @@
-# interfaces/pause_menu.py
 import pygame
 from settings import WIDTH, HEIGTH
 
-
 class PauseMenu:
+    """
+    Classe que representa o menu de pausa no jogo. Quando o jogo é pausado, este menu permite
+    ao jogador escolher entre continuar o jogo ou voltar ao menu principal.
+
+    Atributos:
+        display_surface (pygame.Surface): A superfície onde o menu será desenhado.
+        font (pygame.font.Font): Fonte usada para o título "JOGO PAUSADO".
+        small_font (pygame.font.Font): Fonte usada para os textos dos botões.
+        overlay_color (tuple): Cor do overlay semitransparente que cobre o fundo do menu de pausa.
+        button_color (tuple): Cor dos botões no estado normal.
+        button_hover_color (tuple): Cor dos botões quando o mouse passa sobre eles.
+        text_color (tuple): Cor do texto exibido no menu.
+        buttons (list): Lista de botões do menu, cada um com a posição, o texto e a ação associada.
+
+    Métodos:
+        __init__: Inicializa o menu de pausa com a configuração dos botões e suas ações.
+        draw: Desenha o menu de pausa na tela, incluindo os botões e o título.
+        handle_event: Processa os eventos de clique do mouse e retorna a ação associada ao botão clicado.
+    """
+
     def __init__(self):
+        """
+        Inicializa o menu de pausa com a configuração dos botões e suas ações.
+        Define as cores, fontes e a posição dos botões.
+        """
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font(None, 48)
         self.small_font = pygame.font.Font(None, 36)
@@ -26,6 +48,10 @@ class PauseMenu:
         ]
 
     def draw(self):
+        """
+        Desenha o menu de pausa na tela, incluindo o overlay transparente,
+        os botões e o título "JOGO PAUSADO".
+        """
         # Overlay transparente
         overlay = pygame.Surface((WIDTH, HEIGTH), pygame.SRCALPHA)
         overlay.fill(self.overlay_color)
@@ -49,7 +75,15 @@ class PauseMenu:
         self.display_surface.blit(title, title.get_rect(center=(WIDTH // 2, HEIGTH // 4)))
 
     def handle_event(self, event):
-        """Processa eventos e retorna a ação correspondente"""
+        """
+        Processa eventos de clique do mouse e retorna a ação associada ao botão clicado.
+
+        Parâmetros:
+            event (pygame.event): O evento que foi disparado.
+
+        Retorna:
+            str: A ação do botão clicado (como "continue" ou "main_menu"), ou None se nenhum botão foi clicado.
+        """
         if event.type == pygame.MOUSEBUTTONDOWN:
             for button in self.buttons:
                 if button["rect"].collidepoint(event.pos):
