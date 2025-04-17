@@ -6,6 +6,12 @@ You play as **two characters**, trapped in a nightmare. Your mission is to **esc
 
 ---
 
+## 🕹️  Gameplay
+
+A full gameplay can be found in the following video: [gameplay video](https://youtu.be/z6KTe0SZJlA)
+
+---
+
 Team:
 
  Diogo Bueno Rodrigues
